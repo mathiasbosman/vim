@@ -4,6 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+/**
+ * Abstract controller containing a trace log for URI calls.
+ */
 @Slf4j
 public abstract class AbstractVimController {
 

@@ -1,7 +1,8 @@
 package be.mathiasbosman.vim.controller;
 
-import be.mathiasbosman.vim.dto.ItemDto;
+import be.mathiasbosman.vim.domain.ItemDto;
 import be.mathiasbosman.vim.entity.ItemStatus;
+import be.mathiasbosman.vim.service.ItemService;
 import be.mathiasbosman.vim.service.ItemServiceImpl;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller mostly used with the {@link ItemService}.
+ */
 @RestController
 @RequiredArgsConstructor
 public class ItemController extends AbstractVimController {

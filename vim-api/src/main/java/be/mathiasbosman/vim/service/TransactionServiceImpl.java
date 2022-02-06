@@ -1,73 +1,70 @@
 package be.mathiasbosman.vim.service;
 
-import be.mathiasbosman.vim.db.ItemRepository;
 import be.mathiasbosman.vim.db.TransactionRepository;
-import be.mathiasbosman.vim.dto.ItemDto;
-import be.mathiasbosman.vim.dto.TransactionDto;
+import be.mathiasbosman.vim.domain.VimException;
 import be.mathiasbosman.vim.entity.Item;
 import be.mathiasbosman.vim.entity.ItemStatus;
 import be.mathiasbosman.vim.entity.Transaction;
 import be.mathiasbosman.vim.entity.TransactionType;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.event.Level;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of the {@link TransactionService} interface.
+ */
 @Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class TransactionService {
+public class TransactionServiceImpl implements TransactionService {
 
-  private final ItemRepository itemRepository;
   private final TransactionRepository transactionRepository;
 
-  Transaction create(ItemDto itemDto, TransactionType transactionType) {
-    // check if the item is available
-    Optional<Item> item = itemRepository.findById(itemDto.id());
-    if (item.isEmpty()) {
-      //todo: create validation exception
-      throw new IllegalArgumentException("Item not found");
-    }
-
-    Item itemEntity = item.get();
-    ItemStatus currentStatus = itemEntity.getStatus();
+  @Override
+  public Transaction create(Item item, TransactionType transactionType) {
+    ItemStatus currentStatus = item.getStatus();
     if (!transactionType.isValidForItemStatus(currentStatus)) {
-      // todo: create validation exception
-      log.error("Invalid pre-item status ({}) for transaction type {}", currentStatus, transactionType);
-      throw new IllegalStateException("Invalid pre-item status");
+      throw new VimException(
+          Level.WARN, "Invalid pre-item status (%s) for transaction of type %s",
+          currentStatus, transactionType);
     }
 
     // adjust the item status
-    itemEntity.setStatus(transactionType.getPostItemStatus());
-    itemRepository.save(itemEntity);
+    item.setStatus(transactionType.getPostItemStatus());
     // create the transaction
     Transaction transaction = Transaction.builder()
-        .item(itemEntity)
+        .item(item)
         .type(transactionType)
         .build();
     return transactionRepository.save(transaction);
   }
 
-  public Transaction checkIn(ItemDto itemDto) {
-    return create(itemDto, TransactionType.CHECK_IN);
+  @Override
+  public Transaction checkIn(Item item) {
+    return create(item, TransactionType.CHECK_IN);
   }
 
-  public Transaction checkOut(ItemDto itemDto) {
-    return create(itemDto, TransactionType.CHECK_OUT);
+  @Override
+  public Transaction checkOut(Item item) {
+    return create(item, TransactionType.CHECK_OUT);
   }
 
-  public Transaction markDamaged(ItemDto itemDto) {
-    return create(itemDto, TransactionType.MARK_DAMAGED);
+  @Override
+  public Transaction markDamaged(Item item) {
+    return create(item, TransactionType.MARK_DAMAGED);
   }
 
-  public Transaction markRepaired(ItemDto itemDto) {
-    return create(itemDto, TransactionType.MARK_REPAIRED);
+  @Override
+  public Transaction markRepaired(Item item) {
+    return create(item, TransactionType.MARK_REPAIRED);
   }
 
-  public Transaction remove(ItemDto itemDto) {
-    return create(itemDto, TransactionType.REMOVE);
+  @Override
+  public Transaction remove(Item item) {
+    return create(item, TransactionType.REMOVE);
   }
 
 }

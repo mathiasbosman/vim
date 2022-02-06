@@ -42,14 +42,15 @@ public interface ItemRepository extends VimRepository<Item> {
 
   /**
    * Returns all {@link Item}s that have a given {@link ItemStatus} or given {@link Category} or
-   * given {@link ItemStatus}
+   * given {@link ItemStatus}.
    *
    * @param name       Name to search for
    * @param categories Categories to search for
    * @param statuses   Statuses to search for
    * @return list of items
    */
-  @Query("select i from Item i where upper(i.name) like upper(concat('%', ?1, '%')) or i.category in ?2 or i.status in ?3")
+  @Query("select i from Item i where upper(i.name) like upper(concat('%', ?1, '%'))"
+      + " or i.category in ?2 or i.status in ?3")
   List<Item> searchItems(@Nullable String name, @Nullable Collection<Category> categories,
       @Nullable Collection<ItemStatus> statuses);
 

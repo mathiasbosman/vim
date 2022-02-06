@@ -2,7 +2,6 @@ package be.mathiasbosman.vim.db;
 
 import be.mathiasbosman.vim.entity.Identifiable;
 import java.util.UUID;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

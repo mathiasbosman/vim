@@ -9,6 +9,9 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+/**
+ * Abstract class for entities that have an audit trail.
+ */
 @Getter
 @MappedSuperclass
 public abstract class AbstractAuditedEntity implements AuditableEntity {

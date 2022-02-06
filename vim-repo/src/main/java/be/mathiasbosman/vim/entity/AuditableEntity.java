@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 public interface AuditableEntity {
 
   /**
-   * Returns the {@link LocalDateTime} at which the entity was created
+   * Returns the {@link LocalDateTime} at which the entity was created.
    *
    * @return the timestamp of creation
    */
   LocalDateTime getCreated();
 
   /**
-   * Returns the {@link LocalDateTime} at which the entity was updated
+   * Returns the {@link LocalDateTime} at which the entity was updated.
    *
    * @return the timestamp of update
    */

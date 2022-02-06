@@ -17,7 +17,7 @@ import org.mockito.Mock;
 class ItemServiceTest extends AbstractServiceTest {
 
   @InjectMocks
-  ItemService itemService;
+  ItemServiceImpl itemService;
 
   @Mock
   ItemRepository itemRepository;

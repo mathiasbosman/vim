@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: vim_dba
+    password: admin
+    url: jdbc:postgresql://localhost:7432/vim_db
+logging:
+  level:
+    be.mathiasbosman.vim: trace

@@ -36,8 +36,10 @@ class CategoryRepositoryTest extends AbstractRepositoryTest {
   @Test
   void findByParentCategory() {
     Category parent = create(Category.builder().name("Parent cat.").code("P").build());
-    Category subCategory1 = create(Category.builder().name("Sub cat. 1").code("S1").parentCategory(parent).build());
-    Category subCategory2 = create(Category.builder().name("Sub cat. 2").code("S2").parentCategory(parent).build());
+    Category subCategory1 = create(
+        Category.builder().name("Sub cat. 1").code("S1").parentCategory(parent).build());
+    Category subCategory2 = create(
+        Category.builder().name("Sub cat. 2").code("S2").parentCategory(parent).build());
     assertThat(repository.findByParentCategory(parent))
         .containsExactlyInAnyOrder(subCategory1, subCategory2);
   }

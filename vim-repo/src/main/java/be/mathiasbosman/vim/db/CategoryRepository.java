@@ -20,7 +20,8 @@ public interface CategoryRepository extends VimRepository<Category> {
   Category getByCode(String code);
 
   /**
-   * Finds all categories containing the given name or code
+   * Finds all categories containing the given name or code.
+   *
    * @param code Code to search for.
    * @param name Name to search for.
    * @return List of categories found.
@@ -29,6 +30,7 @@ public interface CategoryRepository extends VimRepository<Category> {
 
   /**
    * Returns all categories that have the given category as parent.
+   *
    * @param parentCategory The parent category.
    * @return List of categories found.
    */

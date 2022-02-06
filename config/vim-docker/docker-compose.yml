@@ -1,0 +1,40 @@
+version: "3"
+services:
+  vim-local-db:
+    image: postgres
+    ports:
+      - '7432:5432'
+    environment:
+      - POSTGRES_DB=vim_db
+      - POSTGRES_USER=vim_dba
+      - POSTGRES_PASSWORD=admin
+  keycloak-local-db:
+    image: postgres
+    ports:
+      - '8432:5432'
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=keycloak_db
+      - POSTGRES_USER=keycloak_dba
+      - POSTGRES_PASSWORD=admin
+  keycloak-server:
+    build:
+      context: .
+      dockerfile: keycloak-server.Dockerfile
+    environment:
+      - DB_VENDOR=postgres
+      - DB_ADDR=keycloak-local-db
+      - DB_DATABASE=keycloak_db
+      - DB_USER=keycloak_dba
+      - DB_PASSWORD=admin
+      - DB_PORT=8432
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    ports:
+      - '8083:8080'
+    depends_on:
+      - keycloak-local-db
+volumes:
+  keycloak-db-data:
+    external: true

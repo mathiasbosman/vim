@@ -1,18 +1,19 @@
 package be.mathiasbosman.vim.service;
 
 import be.mathiasbosman.vim.db.ItemRepository;
-import be.mathiasbosman.vim.dto.ItemDto;
 import be.mathiasbosman.vim.entity.Category;
 import be.mathiasbosman.vim.entity.Item;
 import be.mathiasbosman.vim.entity.ItemStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of the {@link ItemService} interface.
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor

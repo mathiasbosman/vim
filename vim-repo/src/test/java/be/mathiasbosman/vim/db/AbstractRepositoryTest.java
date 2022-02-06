@@ -1,11 +1,9 @@
 package be.mathiasbosman.vim.db;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -20,7 +18,7 @@ abstract class AbstractRepositoryTest {
     return entityManager.persist(entity);
   }
 
-  protected <E> void remove (E entity) {
+  protected <E> void remove(E entity) {
     entityManager.remove(entity);
   }
 }

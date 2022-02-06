@@ -1,7 +1,6 @@
-package be.mathiasbosman.vim.dto;
+package be.mathiasbosman.vim.domain;
 
 import java.time.LocalDateTime;
-import lombok.Data;
 
 /**
  * Simple record of the server info.

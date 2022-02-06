@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 public abstract class AbstractControllerTest {
+
   @Autowired
   private MockMvc mvc;
 
@@ -24,7 +25,7 @@ public abstract class AbstractControllerTest {
   public String mapRequest(Object... paths) {
     return Arrays.stream(paths)
         .map(Object::toString)
-        .collect(Collectors.joining("/",  "/", ""));
+        .collect(Collectors.joining("/", "/", ""));
   }
 
   @Test

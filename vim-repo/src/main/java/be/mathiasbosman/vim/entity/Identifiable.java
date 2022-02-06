@@ -10,7 +10,7 @@ package be.mathiasbosman.vim.entity;
 public interface Identifiable<K> {
 
   /**
-   * Returns the entity's identifier
+   * Returns the entity's identifier.
    *
    * @return the unique identifier
    */

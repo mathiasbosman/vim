@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
   <artifactId>vim-api</artifactId>
-
-  <parent>
-    <groupId>be.mathiasbosman</groupId>
-    <artifactId>vim</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-
   <dependencies>
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <groupId>be.mathiasbosman</groupId>
       <artifactId>vim-repo</artifactId>
+      <groupId>be.mathiasbosman</groupId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>postgresql</artifactId>
+      <groupId>org.postgresql</groupId>
     </dependency>
     <dependency>
       <artifactId>h2</artifactId>
@@ -27,5 +23,13 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>vim</artifactId>
+    <groupId>be.mathiasbosman</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 
 </project>

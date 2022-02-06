@@ -30,6 +30,6 @@ public enum TransactionType {
   }
 
   public boolean isValidForItemStatus(ItemStatus itemStatus) {
-    return preItemStates.isEmpty() || preItemStates.contains(itemStatus);
+    return preItemStates.contains(itemStatus);
   }
 }

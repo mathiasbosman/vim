@@ -16,7 +16,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface VimRepository<E extends Identifiable<UUID>> extends CrudRepository<E, UUID> {
 
   /**
-   * Returns an entity from a given repository based on it's identifier.
+   * Returns an entity from a given repository based on its identifier.
    *
    * @param repo the {@link VimRepository} to query
    * @param id   {@link UUID} of the entity to search

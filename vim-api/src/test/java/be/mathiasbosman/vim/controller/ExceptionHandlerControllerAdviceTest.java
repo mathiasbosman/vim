@@ -21,19 +21,9 @@ public class ExceptionHandlerControllerAdviceTest extends AbstractControllerTest
 
   @Test
   void testRunTimeException() throws Exception {
-
     when(exceptionServiceStub.throwException())
         .thenThrow(new RuntimeException("foo bar"));
-
-    mvc.perform(get("/exceptionStub/throw"))
-        .andExpect(status().isInternalServerError())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.status").value(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-        .andExpect(jsonPath("$.message").value("foo bar"))
-        .andExpect(jsonPath("$.timestamp").exists())
-        .andExpect(jsonPath("$.error").exists())
-        .andExpect(jsonPath("$.exception").exists())
-        .andExpect(jsonPath("$.errorId").exists());
+    testExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR, "foo bar");
   }
 
   @Test
@@ -42,15 +32,20 @@ public class ExceptionHandlerControllerAdviceTest extends AbstractControllerTest
       reset(exceptionServiceStub);
       when(exceptionServiceStub.throwException()).thenThrow(
           new VimException(logLevel, logLevel.name()));
-      mvc.perform(get("/exceptionStub/throw"))
-          .andExpect(status().isBadRequest())
-          .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-          .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()))
-          .andExpect(jsonPath("$.message").value(logLevel.name()))
-          .andExpect(jsonPath("$.timestamp").exists())
-          .andExpect(jsonPath("$.error").exists())
-          .andExpect(jsonPath("$.exception").exists())
-          .andExpect(jsonPath("$.errorId").exists());
+      testExceptionResponse(HttpStatus.BAD_REQUEST, logLevel.name());
     }
+  }
+
+  private void testExceptionResponse(HttpStatus status, String message)
+      throws Exception {
+    mvc.perform(get("/exceptionStub/throw"))
+        .andExpect(status().is(status.value()))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.status").value(status.value()))
+        .andExpect(jsonPath("$.message").value(message))
+        .andExpect(jsonPath("$.error").exists())
+        .andExpect(jsonPath("$.errorId").exists())
+        .andExpect(jsonPath("$.timestamp").exists())
+        .andExpect(jsonPath("$.exception").exists());
   }
 }

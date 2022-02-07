@@ -11,6 +11,14 @@
       </plugin>
       <plugin>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <!-- main application class -->
+            <exclude>**/VimApplication.class</exclude>
+            <!-- hibernate classes -->
+            <exclude>**/entity/AbstractAuditedEntity.class</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <goals>

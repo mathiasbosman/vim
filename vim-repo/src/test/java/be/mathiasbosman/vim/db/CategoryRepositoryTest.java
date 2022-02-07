@@ -14,7 +14,10 @@ class CategoryRepositoryTest extends AbstractRepositoryTest {
   @Test
   void getByCode() {
     Category categoryA = create(Category.builder().name("Category A").code("A").build());
-    assertThat(repository.getByCode("A")).isEqualTo(categoryA);
+    Category persisted = repository.getByCode(categoryA.getCode());
+    assertThat(persisted).isEqualTo(categoryA);
+    assertThat(persisted.getId()).isNotNull();
+    assertThat(persisted.getName()).isEqualTo(categoryA.getName());
     assertThat(repository.getByCode("B")).isNull();
   }
 

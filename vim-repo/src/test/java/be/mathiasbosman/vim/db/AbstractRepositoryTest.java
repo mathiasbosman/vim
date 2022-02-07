@@ -17,8 +17,4 @@ abstract class AbstractRepositoryTest {
   protected <E> E create(E entity) {
     return entityManager.persist(entity);
   }
-
-  protected <E> void remove(E entity) {
-    entityManager.remove(entity);
-  }
 }

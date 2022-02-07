@@ -10,6 +10,8 @@ import be.mathiasbosman.vim.entity.Category;
 import be.mathiasbosman.vim.entity.Item;
 import be.mathiasbosman.vim.entity.ItemStatus;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,6 +23,17 @@ class ItemServiceTest extends AbstractServiceTest {
 
   @Mock
   ItemRepository itemRepository;
+
+  @Test
+  void findItem() {
+    UUID id = UUID.randomUUID();
+    Item item = Item.builder().id(id).name("Item A").build();
+    when(itemRepository.findById(id)).thenReturn(Optional.of(item));
+    assertThat(itemService.findById(id))
+        .isPresent()
+        .get()
+        .isEqualTo(item);
+  }
 
   @Test
   void saveItem() {

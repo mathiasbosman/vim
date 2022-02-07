@@ -39,7 +39,7 @@
       <plugin>
         <artifactId>dependency-check-maven</artifactId>
         <configuration>
-          <skip>${owasp.skip}</skip>
+          <skip>${skipOwasp}</skip>
         </configuration>
         <executions>
           <execution>
@@ -106,7 +106,7 @@
     <java.language.version>17</java.language.version>
     <maven.compiler.source>${java.language.version}</maven.compiler.source>
     <maven.compiler.target>${java.language.version}</maven.compiler.target>
-    <owasp.skip>false</owasp.skip>
+    <skipOwasp>false</skipOwasp>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

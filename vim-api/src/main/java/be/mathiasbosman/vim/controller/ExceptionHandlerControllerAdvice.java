@@ -3,7 +3,6 @@ package be.mathiasbosman.vim.controller;
 import be.mathiasbosman.vim.domain.VimException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,9 +70,6 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
     Map<String, Object> attributes = errorAttributes.getErrorAttributes(request,
         ErrorAttributeOptions.of(Include.MESSAGE, Include.EXCEPTION));
     attributes.put("status", httpStatus.value());
-    if (!attributes.containsKey(ErrorAttributesWithUuid.ERROR_ID)) {
-      attributes.put(ErrorAttributesWithUuid.ERROR_ID, UUID.randomUUID());
-    }
     attributes.put("error", httpStatus.getReasonPhrase());
     attributes.remove(ErrorAttributesWithUuid.THROWABLE);
     return ResponseEntity.status(httpStatus).body(attributes);

@@ -1,4 +1,8 @@
-version: "3"
+version: '3'
+volumes:
+  postgres_data:
+    driver: local
+
 services:
   vim-local-db:
     image: postgres
@@ -8,33 +12,31 @@ services:
       - POSTGRES_DB=vim_db
       - POSTGRES_USER=vim_dba
       - POSTGRES_PASSWORD=admin
-  keycloak-local-db:
-    image: postgres
-    ports:
-      - '8432:5432'
+  vim-keycloak-local-db:
+    image: postgres:11
     volumes:
-      - keycloak-db-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=keycloak_db
-      - POSTGRES_USER=keycloak_dba
-      - POSTGRES_PASSWORD=admin
-  keycloak-server:
-    build:
-      context: .
-      dockerfile: keycloak-server.Dockerfile
-    environment:
-      - DB_VENDOR=postgres
-      - DB_ADDR=keycloak-local-db
-      - DB_DATABASE=keycloak_db
-      - DB_USER=keycloak_dba
-      - DB_PASSWORD=admin
-      - DB_PORT=8432
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
     ports:
-      - '8083:8080'
+      - "5433:5432"
+  vim-local-keycloak:
+    image: wizzn/keycloak:14
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: vim-keycloak-local-db
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: password
+      KEYCLOAK_LOGLEVEL: DEBUG
+      ROOT_LOGLEVEL: DEBUG
+    ports:
+      - "8180:8080"
+      - "8443:8443"
     depends_on:
-      - keycloak-local-db
-volumes:
-  keycloak-db-data:
-    external: true
+      - vim-keycloak-local-db

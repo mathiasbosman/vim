@@ -10,10 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import be.mathiasbosman.vim.domain.VimException;
 import org.junit.jupiter.api.Test;
 import org.slf4j.event.Level;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+@AutoConfigureMockMvc(addFilters = false)
 public class ExceptionHandlerControllerAdviceTest extends AbstractControllerTest {
 
   @MockBean

@@ -14,6 +14,14 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <artifactId>spring-boot-starter-security</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>keycloak-spring-boot-starter</artifactId>
+      <groupId>org.keycloak</groupId>
+    </dependency>
+    <dependency>
       <artifactId>postgresql</artifactId>
       <groupId>org.postgresql</groupId>
     </dependency>
@@ -21,6 +29,21 @@
       <artifactId>h2</artifactId>
       <groupId>com.h2database</groupId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>spring-security-test</artifactId>
+      <groupId>org.springframework.security</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 

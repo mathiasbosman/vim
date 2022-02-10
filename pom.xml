@@ -54,29 +54,18 @@
     </plugins>
   </build>
 
-  <dependencies>
-    <dependency>
-      <artifactId>spring-boot-starter</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-boot-devtools</artifactId>
-      <groupId>org.springframework.boot</groupId>
-      <optional>true</optional>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <artifactId>lombok</artifactId>
-      <groupId>org.projectlombok</groupId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <groupId>org.springframework.boot</groupId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <!-- security -->
+      <dependency>
+        <artifactId>keycloak-spring-boot-starter</artifactId>
+        <groupId>org.keycloak</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>16.1.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <description>vim</description>
   <distributionManagement>
     <!-- Github distribution -->

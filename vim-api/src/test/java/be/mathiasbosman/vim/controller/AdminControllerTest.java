@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import be.mathiasbosman.vim.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -12,7 +13,8 @@ public class AdminControllerTest extends AbstractControllerTest {
 
   @Test
   void info() throws Exception {
-    mvc.perform(get("/rest/admin/info"))
+    mvc.perform(get("/rest/admin/info")
+            .with(mockUserWithRoles(SecurityConfig.API_USER_ROLE)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.time").isNotEmpty())

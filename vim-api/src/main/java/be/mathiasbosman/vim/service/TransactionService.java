@@ -11,13 +11,5 @@ public interface TransactionService {
 
   Transaction create(Item item, TransactionType transactionType);
 
-  Transaction checkIn(Item item);
-
-  Transaction checkOut(Item item);
-
-  Transaction markDamaged(Item item);
-
-  Transaction markRepaired(Item item);
-
-  Transaction remove(Item item);
+  Transaction executeTransaction(Transaction transaction);
 }

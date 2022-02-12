@@ -43,28 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
-  public Transaction checkIn(Item item) {
-    return create(item, TransactionType.CHECK_IN);
+  public Transaction executeTransaction(Transaction transaction) {
+    return create(transaction.getItem(), transaction.getType());
   }
-
-  @Override
-  public Transaction checkOut(Item item) {
-    return create(item, TransactionType.CHECK_OUT);
-  }
-
-  @Override
-  public Transaction markDamaged(Item item) {
-    return create(item, TransactionType.MARK_DAMAGED);
-  }
-
-  @Override
-  public Transaction markRepaired(Item item) {
-    return create(item, TransactionType.MARK_REPAIRED);
-  }
-
-  @Override
-  public Transaction remove(Item item) {
-    return create(item, TransactionType.REMOVE);
-  }
-
 }

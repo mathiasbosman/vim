@@ -9,4 +9,16 @@ import java.util.UUID;
  */
 public record TransactionDto(UUID id, ItemDto itemDto, TransactionType type) {
 
+  public static TransactionDto fromEntity(Transaction transaction) {
+    return new TransactionDto(transaction.getId(), ItemDto.fromEntity(transaction.getItem()),
+        transaction.getType());
+  }
+
+  public Transaction mapToTransactionEntity() {
+    return Transaction.builder()
+        .id(id)
+        .item(itemDto.mapToItemEntity())
+        .type(type)
+        .build();
+  }
 }

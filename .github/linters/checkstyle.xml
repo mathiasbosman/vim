@@ -17,28 +17,19 @@
  -->
 
 <module name="Checker">
-  <module name="BeforeExecutionExclusionFileFilter">
-    <property name="fileNamePattern" value="module\-info\.java$"/>
-  </module>
-
   <module name="SuppressionFilter">
     <property default="checkstyle-suppressions.xml" name="file"
       value="${org.checkstyle.google.suppressionfilter.config}"/>
     <property name="optional" value="true"/>
   </module>
 
-  <module name="FileTabCharacter">
-    <property name="eachLine" value="true"/>
-  </module>
-  <!-- Excludes all 'module-info.java' files              -->
-  <!-- See https://checkstyle.org/config_filefilters.html -->
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
     <property name="max" value="100"/>
     <property name="ignorePattern"
       value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
   </module>
-  <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
+
   <module name="TreeWalker">
     <module name="OuterTypeFilename"/>
     <module name="IllegalTokenText">
@@ -98,7 +89,7 @@
     <module name="WhitespaceAfter">
       <property name="tokens"
         value="COMMA, SEMI, TYPECAST, LITERAL_IF, LITERAL_ELSE,
-                    LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, DO_WHILE"/>
+                    LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, DO_WHILE, ELLIPSIS"/>
     </module>
     <module name="WhitespaceAround">
       <message key="ws.notFollowed"
@@ -162,70 +153,70 @@
       <property name="option" value="nl"/>
     </module>
     <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
       <message key="name.invalidPattern"
         value="Package name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
     </module>
     <module name="TypeName">
-      <message key="name.invalidPattern"
-        value="Type name ''{0}'' must match pattern ''{1}''."/>
       <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
                     ANNOTATION_DEF, RECORD_DEF"/>
+      <message key="name.invalidPattern"
+        value="Type name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="MemberName">
+      <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
       <message key="name.invalidPattern"
         value="Member name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
     </module>
     <module name="ParameterName">
+      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
       <message key="name.invalidPattern"
         value="Parameter name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
     </module>
     <module name="LambdaParameterName">
+      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
       <message key="name.invalidPattern"
         value="Lambda parameter name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
     </module>
     <module name="CatchParameterName">
+      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
       <message key="name.invalidPattern"
         value="Catch parameter name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
     </module>
     <module name="LocalVariableName">
+      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
       <message key="name.invalidPattern"
         value="Local variable name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
     </module>
     <module name="PatternVariableName">
+      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
       <message key="name.invalidPattern"
         value="Pattern variable name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
     </module>
     <module name="ClassTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
       <message key="name.invalidPattern"
         value="Class type name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
     </module>
     <module name="RecordComponentName">
+      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
       <message key="name.invalidPattern"
         value="Record component name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
     </module>
     <module name="RecordTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
       <message key="name.invalidPattern"
         value="Record type name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
     </module>
     <module name="MethodTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
       <message key="name.invalidPattern"
         value="Method type name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
     </module>
     <module name="InterfaceTypeParameterName">
+      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
       <message key="name.invalidPattern"
         value="Interface type name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
     </module>
     <module name="NoFinalizer"/>
     <module name="GenericWhitespace">
@@ -336,9 +327,9 @@
       <property name="excludeScope" value="nothing"/>
     </module>
     <module name="MethodName">
+      <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
       <message key="name.invalidPattern"
         value="Method name ''{0}'' must match pattern ''{1}''."/>
-      <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
     </module>
     <module name="SingleLineJavadoc"/>
     <module name="EmptyCatchBlock">
@@ -354,12 +345,21 @@
       <property name="optional" value="true"/>
     </module>
   </module>
+  <!-- Excludes all 'module-info.java' files              -->
+  <!-- See https://checkstyle.org/config_filefilters.html -->
+  <module name="BeforeExecutionExclusionFileFilter">
+    <property name="fileNamePattern" value="module\-info\.java$"/>
+  </module>
+  <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
+  <property name="charset" value="UTF-8"/>
 
   <!-- Checks for whitespace                               -->
   <!-- See http://checkstyle.org/config_whitespace.html -->
-  <property name="fileExtensions" value="java, properties, xml"/>
-
-  <property name="charset" value="UTF-8"/>
+  <module name="FileTabCharacter">
+    <property name="eachLine" value="true"/>
+  </module>
 
   <property name="severity" value="warning"/>
+
+  <property name="fileExtensions" value="java, properties, xml"/>
 </module>

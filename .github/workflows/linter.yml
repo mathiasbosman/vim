@@ -1,3 +1,4 @@
+#TODO: re-activate this workflow when the checkstyle is fixed (buggy for Java record types)
 name: Lint
 on:
   push:

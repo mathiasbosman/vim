@@ -14,6 +14,11 @@ public record TransactionDto(UUID id, ItemDto itemDto, TransactionType type) {
         transaction.getType());
   }
 
+  /**
+   * Maps the record to the {@link Transaction} entity.
+   *
+   * @return an entity of {@link Transaction}
+   */
   public Transaction mapToTransactionEntity() {
     return Transaction.builder()
         .id(id)

@@ -15,7 +15,7 @@ public record CategoryDto(UUID id, String name, String code) {
   /**
    * Maps the record to the {@link Category} entity.
    *
-   * @return an entity of the Category type.
+   * @return an entity of {@link Category}
    */
   public Category mapToCategoryEntity() {
     return Category.builder()

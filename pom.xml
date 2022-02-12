@@ -82,7 +82,7 @@
     <module>vim-repo</module>
   </modules>
   <name>vim</name>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <parent>
     <artifactId>spring-boot-starter-parent</artifactId>

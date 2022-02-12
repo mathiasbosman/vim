@@ -24,6 +24,7 @@ public class TransactionServiceImpl implements TransactionService {
   private final TransactionRepository transactionRepository;
 
   @Override
+  @Transactional
   public Transaction create(Item item, TransactionType transactionType) {
     ItemStatus currentStatus = item.getStatus();
     if (!transactionType.isValidForItemStatus(currentStatus)) {

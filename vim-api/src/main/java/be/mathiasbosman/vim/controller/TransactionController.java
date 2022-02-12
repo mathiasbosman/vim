@@ -17,7 +17,7 @@ public class TransactionController extends AbstractVimController {
   private final TransactionService transactionService;
 
   @PostMapping("/rest/transaction")
-  public TransactionDto checkInItem(@RequestBody TransactionDto transactionDto) {
+  public TransactionDto executeTransaction(@RequestBody TransactionDto transactionDto) {
     return TransactionDto.fromEntity(
         transactionService.executeTransaction(transactionDto.mapToTransactionEntity()));
   }

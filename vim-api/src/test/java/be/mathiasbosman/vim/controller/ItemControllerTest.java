@@ -18,7 +18,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
+@WithMockUser(roles = {SecurityConfig.API_USER_ROLE})
 public class ItemControllerTest extends AbstractControllerTest {
 
   @MockBean
@@ -37,8 +39,7 @@ public class ItemControllerTest extends AbstractControllerTest {
         List.of(mockItem0, mockItem1));
     mvc.perform(
             get("/rest/items")
-                .param("status", ItemStatus.AVAILABLE.toString())
-                .with(mockUserWithRoles(SecurityConfig.API_USER_ROLE)))
+                .param("status", ItemStatus.AVAILABLE.toString()))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$", hasSize(2)))
@@ -46,11 +47,8 @@ public class ItemControllerTest extends AbstractControllerTest {
         .andExpect(jsonPath("$[1].id").value(mockItem1.getId().toString()))
         .andReturn();
 
-    mvc.perform(get("/rest/items").with(mockUserWithRoles(SecurityConfig.API_USER_ROLE)))
-        .andExpect(status().isBadRequest());
-    mvc.perform(get("/rest/items")
-            .with(mockUserWithRoles(SecurityConfig.API_USER_ROLE))
-            .param("status", "invalid"))
+    mvc.perform(get("/rest/items")).andExpect(status().isBadRequest());
+    mvc.perform(get("/rest/items").param("status", "invalid"))
         .andExpect(status().isBadRequest());
   }
 
@@ -58,16 +56,13 @@ public class ItemControllerTest extends AbstractControllerTest {
   void findItem() throws Exception {
     Item mockItem = mockItem(UUID.randomUUID(), ItemStatus.UNAVAILABLE);
     when(itemRepository.findById(mockItem.getId())).thenReturn(Optional.of(mockItem));
-    mvc.perform(get("/rest/item/find")
-            .with(mockUserWithRoles(SecurityConfig.API_USER_ROLE))
-            .param("uuid", mockItem.getId().toString()))
+    mvc.perform(get("/rest/item/find").param("uuid", mockItem.getId().toString()))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.id").value(mockItem.getId().toString()));
     UUID invalidUuid = UUID.randomUUID();
     when(itemRepository.findById(invalidUuid)).thenReturn(Optional.empty());
-    mvc.perform(get("/rest/item/find").with(mockUserWithRoles(SecurityConfig.API_USER_ROLE))
-            .param("uuid", invalidUuid.toString()))
+    mvc.perform(get("/rest/item/find").param("uuid", invalidUuid.toString()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").doesNotExist());
   }

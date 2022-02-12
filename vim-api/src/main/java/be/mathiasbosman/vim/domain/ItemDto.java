@@ -18,7 +18,7 @@ public record ItemDto(UUID id, String name, String brand, CategoryDto categoryDt
   /**
    * Maps the record to an {@link Item} entity.
    *
-   * @return the {@link Item} entity
+   * @return an entity of {@link Item}
    */
   public Item mapToItemEntity() {
     return Item.builder().id(id)

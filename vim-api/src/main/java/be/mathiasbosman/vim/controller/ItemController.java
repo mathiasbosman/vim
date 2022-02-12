@@ -3,7 +3,6 @@ package be.mathiasbosman.vim.controller;
 import be.mathiasbosman.vim.domain.ItemDto;
 import be.mathiasbosman.vim.entity.ItemStatus;
 import be.mathiasbosman.vim.service.ItemService;
-import be.mathiasbosman.vim.service.ItemServiceImpl;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ItemController extends AbstractVimController {
 
-  private final ItemServiceImpl itemService;
+  private final ItemService itemService;
 
   @GetMapping("/rest/items")
   public List<ItemDto> getItems(@RequestParam ItemStatus status) {

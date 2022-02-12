@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -48,12 +47,12 @@ class TransactionServiceTest extends AbstractServiceTest {
 
   private void assertTransactions(TransactionType transactionType,
       ItemStatus expectedPostItemStatus,
-      Set<ItemStatus> allowedStatuses, Function<Item, Transaction> method) {
+      Set<ItemStatus> allowedStatuses) {
 
     allowedStatuses.forEach(status -> {
       // create item and mock repository
       Item item = mockItemDtoInRepositoryForStatus(status);
-      Transaction transaction = method.apply(item);
+      Transaction transaction = transactionService.create(item, transactionType);
       assertThat(transaction).isNotNull();
       assertThat(transaction.getType()).isEqualTo(transactionType);
       assertThat(transaction.getItem().getId()).isEqualTo(item.getId());
@@ -65,7 +64,7 @@ class TransactionServiceTest extends AbstractServiceTest {
         .forEach(illegalStatus -> {
           Item item = mockItemDtoInRepositoryForStatus(illegalStatus);
           assertThrows(VimException.class,
-              () -> method.apply(item));
+              () -> transactionService.create(item, transactionType));
         });
   }
 
@@ -75,8 +74,7 @@ class TransactionServiceTest extends AbstractServiceTest {
     assertTransactions(
         TransactionType.CHECK_IN,
         ItemStatus.AVAILABLE,
-        Set.of(ItemStatus.CHECKED_OUT, ItemStatus.UNAVAILABLE),
-        item -> transactionService.checkIn(item));
+        Set.of(ItemStatus.CHECKED_OUT, ItemStatus.UNAVAILABLE));
   }
 
   @Test
@@ -84,8 +82,7 @@ class TransactionServiceTest extends AbstractServiceTest {
     assertTransactions(
         TransactionType.CHECK_OUT,
         ItemStatus.CHECKED_OUT,
-        Set.of(ItemStatus.AVAILABLE, ItemStatus.RESERVED),
-        item -> transactionService.checkOut(item));
+        Set.of(ItemStatus.AVAILABLE, ItemStatus.RESERVED));
   }
 
   @Test
@@ -94,8 +91,7 @@ class TransactionServiceTest extends AbstractServiceTest {
         TransactionType.MARK_DAMAGED,
         ItemStatus.DAMAGED,
         Set.of(ItemStatus.AVAILABLE, ItemStatus.UNAVAILABLE, ItemStatus.CHECKED_OUT,
-            ItemStatus.RESERVED),
-        item -> transactionService.markDamaged(item));
+            ItemStatus.RESERVED));
   }
 
   @Test
@@ -103,8 +99,7 @@ class TransactionServiceTest extends AbstractServiceTest {
     assertTransactions(
         TransactionType.MARK_REPAIRED,
         ItemStatus.AVAILABLE,
-        Collections.singleton(ItemStatus.DAMAGED),
-        item -> transactionService.markRepaired(item));
+        Collections.singleton(ItemStatus.DAMAGED));
   }
 
   @Test
@@ -112,8 +107,7 @@ class TransactionServiceTest extends AbstractServiceTest {
     assertTransactions(
         TransactionType.REMOVE,
         ItemStatus.UNAVAILABLE,
-        Set.of(ItemStatus.AVAILABLE, ItemStatus.DAMAGED),
-        item -> transactionService.remove(item));
+        Set.of(ItemStatus.AVAILABLE, ItemStatus.DAMAGED));
   }
 
 }

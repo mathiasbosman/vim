@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AdminController extends AbstractVimController {
 
-  @GetMapping("/rest/admin/info")
+  @GetMapping("/rest/public/admin/info")
   public ServerInfoDto info() {
     return new ServerInfoDto(LocalDateTime.now(), true);
   }

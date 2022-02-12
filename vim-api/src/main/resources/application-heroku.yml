@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL}
+  resource: ${KEYCLOAK_RESOURCE}
+  credentials:
+    secret: ${KEYCLOAK_CREDENTIALS_SECRET}

@@ -49,7 +49,7 @@
           </execution>
         </executions>
         <groupId>org.owasp</groupId>
-        <version>6.5.3</version>
+        <version>7.0.0</version>
       </plugin>
     </plugins>
   </build>

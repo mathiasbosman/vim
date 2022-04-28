@@ -49,6 +49,20 @@
         <type>pom</type>
         <version>16.1.1</version>
       </dependency>
+
+      <!-- testing -->
+      <dependency>
+        <artifactId>postgresql</artifactId>
+        <groupId>org.testcontainers</groupId>
+        <scope>test</scope>
+        <version>1.17.1</version>
+      </dependency>
+      <dependency>
+        <artifactId>junit-jupiter</artifactId>
+        <groupId>org.testcontainers</groupId>
+        <scope>test</scope>
+        <version>1.17.1</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <description>vim</description>

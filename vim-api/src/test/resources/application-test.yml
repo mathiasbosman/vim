@@ -1,0 +1,7 @@
+spring:
+  # The datasource environment variables are set after starting up the PostgreSQLContainer
+  # see VimPostgresqlContainer
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}

@@ -34,8 +34,9 @@ class ItemServiceIntegrationTest extends AbstractSpringBootTest {
 
   @Test
   void updateItemOnNoneExistingItem() {
+    UUID randomUuid = UUID.randomUUID();
     assertThatThrownBy(
-        () -> itemService.updateItem(UUID.randomUUID(), "foo", "bar", "cat"))
+        () -> itemService.updateItem(randomUuid, "foo", "bar", "cat"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

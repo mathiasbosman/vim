@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @AutoConfigureMockMvc(addFilters = false)
-public class ExceptionHandlerControllerAdviceTest extends AbstractControllerTest {
+class ExceptionHandlerControllerAdviceTest extends AbstractMvcTest {
 
   @MockBean
   private ExceptionServiceStub exceptionServiceStub;
@@ -25,6 +25,7 @@ public class ExceptionHandlerControllerAdviceTest extends AbstractControllerTest
   void testRunTimeException() throws Exception {
     when(exceptionServiceStub.throwException())
         .thenThrow(new RuntimeException("foo bar"));
+
     testExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR, "foo bar");
   }
 
@@ -34,6 +35,7 @@ public class ExceptionHandlerControllerAdviceTest extends AbstractControllerTest
       reset(exceptionServiceStub);
       when(exceptionServiceStub.throwException()).thenThrow(
           new VimException(logLevel, logLevel.name()));
+
       testExceptionResponse(HttpStatus.BAD_REQUEST, logLevel.name());
     }
   }

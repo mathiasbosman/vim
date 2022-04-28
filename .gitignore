@@ -1,3 +1,6 @@
+# Applie stuff
+.DS_STORE
+
 target/
 !**/src/main/**/target/
 !**/src/test/**/target/

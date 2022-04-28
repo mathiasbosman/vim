@@ -26,10 +26,8 @@ public class ErrorAttributesWithUuid extends DefaultErrorAttributes {
     Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
     errorAttributes.put(THROWABLE, throwable);
     errorAttributes.put(WEB_REQUEST, webRequest.toString());
-    if (!errorAttributes.containsKey(ERROR_ID)) {
-      UUID errorId = UUID.randomUUID();
-      errorAttributes.put(ERROR_ID, errorId);
-    }
+    errorAttributes.put(ERROR_ID,
+        errorAttributes.computeIfAbsent(ERROR_ID, k -> UUID.randomUUID()));
     return errorAttributes;
   }
 }

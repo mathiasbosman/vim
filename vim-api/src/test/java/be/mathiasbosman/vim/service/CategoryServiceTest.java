@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-public class CategoryServiceTest extends AbstractServiceTest {
+class CategoryServiceTest extends AbstractServiceTest {
 
   @InjectMocks
   CategoryServiceImpl categoryService;
@@ -21,7 +21,9 @@ public class CategoryServiceTest extends AbstractServiceTest {
   @Test
   void getByCode() {
     Category category = Category.builder().code("foo").name("bar").build();
+
     when(categoryRepository.getByCode("foo")).thenReturn(category);
+
     assertThat(categoryService.getByCode("foo")).isEqualTo(category);
   }
 
@@ -32,8 +34,10 @@ public class CategoryServiceTest extends AbstractServiceTest {
         .parentCategory(parentCategory).build();
     Category subCategoryB = Category.builder().code("foo.b").name("bar.b")
         .parentCategory(parentCategory).build();
+
     when(categoryRepository.findByParentCategory(parentCategory)).thenReturn(
         List.of(subCategoryA, subCategoryB));
+
     assertThat(categoryService.getSubCategories(parentCategory))
         .containsExactlyInAnyOrder(subCategoryA, subCategoryB);
   }

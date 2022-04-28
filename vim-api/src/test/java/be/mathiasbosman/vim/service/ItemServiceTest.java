@@ -28,40 +28,31 @@ class ItemServiceTest extends AbstractServiceTest {
   void findItem() {
     UUID id = UUID.randomUUID();
     Item item = Item.builder().id(id).name("Item A").build();
+
     when(itemRepository.findById(id)).thenReturn(Optional.of(item));
-    assertThat(itemService.findById(id))
-        .isPresent()
-        .get()
-        .isEqualTo(item);
+
+    assertThat(itemService.findById(id)).hasValue(item);
   }
 
   @Test
-  void saveItem() {
-    Category category = Category.builder().name("Category A").build();
-    Item mockItem = Item.builder()
-        .name("foo")
-        .brand("ba")
-        .category(category)
-        .status(ItemStatus.AVAILABLE).build();
-    when(itemRepository.save(any(Item.class))).thenReturn(mockItem);
-    Item savedItem = itemService.saveItem(mockItem);
-    assertThat(savedItem).isEqualTo(mockItem);
-    assertThat(savedItem.getId()).isEqualTo(mockItem.getId());
-    assertThat(savedItem.getName()).isEqualTo(mockItem.getName());
-    assertThat(savedItem.getBrand()).isEqualTo(mockItem.getBrand());
-    assertThat(savedItem.getStatus()).isEqualTo(mockItem.getStatus());
-    assertThat(savedItem.getCategory().getId()).isEqualTo(category.getId());
-  }
-
-  @Test
-  void findItems() {
+  void findItemsByStatus() {
     Item item1 = Item.builder().name("Item A").build();
     Item item2 = Item.builder().name("Item B").build();
+
     when(itemRepository.findAllByStatus(ItemStatus.AVAILABLE))
         .thenReturn(List.of(item1, item2));
+
     assertThat(itemService.findItems(ItemStatus.AVAILABLE))
         .containsExactly(item1, item2);
+  }
+
+  @Test
+  void findItemsByCategory() {
+    Item item1 = Item.builder().name("Item A").build();
+    Item item2 = Item.builder().name("Item B").build();
+
     when(itemRepository.findAllByCategory(any(Category.class))).thenReturn(List.of(item1, item2));
+
     assertThat(itemService.findItems(Category.builder().name("Category A").build()))
         .containsExactly(item1, item2);
   }
@@ -70,6 +61,7 @@ class ItemServiceTest extends AbstractServiceTest {
   void searchItems() {
     Item item1 = Item.builder().name("Item A").build();
     Item item2 = Item.builder().name("Item B").build();
+
     when(itemRepository.searchItems(anyString(), any(), any()))
         .thenReturn(List.of(item1, item2));
 

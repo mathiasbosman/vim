@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-public class AdminControllerTest extends AbstractControllerTest {
+class AdminControllerTest extends AbstractMvcTest {
 
   @Test
   void info() throws Exception {

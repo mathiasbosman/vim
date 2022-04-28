@@ -1,7 +1,7 @@
 package be.mathiasbosman.vim.db;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import be.mathiasbosman.vim.entity.Identifiable;
@@ -29,8 +29,8 @@ class VimRepositoryTest extends AbstractRepositoryTest {
     when(repository.findById(workingId)).thenReturn(Optional.of(new MockObject()));
     when(repository.findById(failingId)).thenReturn(Optional.empty());
     assertThat(VimRepository.getById(repository, workingId)).isNotNull();
-    assertThrows(IllegalArgumentException.class,
-        () -> VimRepository.getById(repository, failingId));
+    assertThatThrownBy(() -> VimRepository.getById(repository, failingId))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Entity

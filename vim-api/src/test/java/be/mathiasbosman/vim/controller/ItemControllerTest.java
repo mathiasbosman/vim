@@ -12,6 +12,7 @@ import be.mathiasbosman.vim.db.ItemRepository;
 import be.mathiasbosman.vim.entity.Category;
 import be.mathiasbosman.vim.entity.Item;
 import be.mathiasbosman.vim.entity.ItemStatus;
+import be.mathiasbosman.vim.security.SecurityContext.Authority;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,8 +21,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-@WithMockUser(roles = {SecurityConfig.API_USER_ROLE})
-public class ItemControllerTest extends AbstractControllerTest {
+@WithMockUser(authorities = {Authority.API_USER, Authority.ITEM_WRITE})
+class ItemControllerTest extends AbstractMvcTest {
 
   @MockBean
   private ItemRepository itemRepository;

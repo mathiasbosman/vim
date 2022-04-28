@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
+  @PreAuthorize("hasAuthority('item-write')")
   @Transactional
   public Item saveItem(Item item) {
     return itemRepository.save(item);

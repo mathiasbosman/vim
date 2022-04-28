@@ -30,11 +30,11 @@ class TransactionControllerTest extends AbstractMvcTest {
         ItemStatus.AVAILABLE);
     TransactionDto transactionDto = new TransactionDto(UUID.randomUUID(), itemDto,
         TransactionType.CHECK_OUT);
+
     when(repository.save(any(Transaction.class))).thenReturn(
         transactionDto.mapToTransactionEntity());
-    mvc.perform(postObject("/rest/transaction", transactionDto, true))
+
+    mvc.perform(postObject("/rest/transaction", transactionDto))
         .andExpect(status().isOk());
-    mvc.perform(postObject("/rest/transaction", null, true))
-        .andExpect(status().isBadRequest());
   }
 }

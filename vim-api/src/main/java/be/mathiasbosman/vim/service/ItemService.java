@@ -16,6 +16,8 @@ public interface ItemService {
 
   Item saveItem(Item item);
 
+  Item updateItem(UUID uuid, String name, String brand, String categoryCode);
+
   List<Item> findItems(Category category);
 
   List<Item> findItems(ItemStatus status);

@@ -1,7 +1,7 @@
 package be.mathiasbosman.vim.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
@@ -63,8 +63,8 @@ class TransactionServiceTest extends AbstractServiceTest {
     Arrays.stream(ItemStatus.values()).filter(status -> !allowedStatuses.contains(status))
         .forEach(illegalStatus -> {
           Item item = mockItemDtoInRepositoryForStatus(illegalStatus);
-          assertThrows(VimException.class,
-              () -> transactionService.create(item, transactionType));
+          assertThatThrownBy(() -> transactionService.create(item, transactionType))
+              .isInstanceOf(VimException.class);
         });
   }
 

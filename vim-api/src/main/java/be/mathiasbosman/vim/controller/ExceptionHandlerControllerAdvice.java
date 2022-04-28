@@ -28,14 +28,15 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
   private final ErrorAttributes errorAttributes;
 
   @ExceptionHandler
-  public ResponseEntity<?> handleRuntimeException(RuntimeException ex, WebRequest request) {
+  public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex,
+      WebRequest request) {
     return createResponseEntityAndLogException(request, HttpStatus.INTERNAL_SERVER_ERROR, ex,
         Level.ERROR);
   }
 
-
   @ExceptionHandler(VimException.class)
-  public ResponseEntity<?> handleVimException(VimException ex, WebRequest request) {
+  public ResponseEntity<Map<String, Object>> handleVimException(VimException ex,
+      WebRequest request) {
     return createResponseEntityAndLogException(request, HttpStatus.BAD_REQUEST, ex,
         ex.getLogLevel());
   }

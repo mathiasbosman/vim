@@ -1,5 +1,6 @@
 package be.mathiasbosman.vim.service;
 
+import be.mathiasbosman.vim.db.CategoryRepository;
 import be.mathiasbosman.vim.db.ItemRepository;
 import be.mathiasbosman.vim.entity.Category;
 import be.mathiasbosman.vim.entity.Item;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * Implementation of the {@link ItemService} interface.
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemServiceImpl implements ItemService {
 
   private final ItemRepository itemRepository;
+  private final CategoryRepository categoryRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -33,6 +36,19 @@ public class ItemServiceImpl implements ItemService {
   @Transactional
   public Item saveItem(Item item) {
     return itemRepository.save(item);
+  }
+
+  @Override
+  @Transactional
+  @PreAuthorize("hasAuthority('item-write')")
+  public Item updateItem(UUID uuid, String name, String brand, String categoryCode) {
+    Item itemToUpdate = itemRepository.findById(uuid)
+        .orElseThrow(() -> new IllegalArgumentException("Item not found"));
+    itemToUpdate.setName(name);
+    itemToUpdate.setBrand(brand);
+    itemToUpdate.setCategory(
+        StringUtils.hasText(categoryCode) ? categoryRepository.getByCode(categoryCode) : null);
+    return saveItem(itemToUpdate);
   }
 
   @Override

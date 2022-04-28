@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Administration controller.
  */
 @RestController
-public class AdminController extends AbstractVimController {
+public class AdminController {
 
   @GetMapping("/rest/public/admin/info")
   public ServerInfoDto info() {

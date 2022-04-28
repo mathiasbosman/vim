@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ExceptionControllerStub extends AbstractVimController {
+public class ExceptionControllerStub {
 
   @Autowired
   ExceptionServiceStub exceptionServiceStub;

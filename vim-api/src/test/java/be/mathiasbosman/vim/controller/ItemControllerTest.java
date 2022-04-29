@@ -18,7 +18,6 @@ import be.mathiasbosman.vim.service.ItemService;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -93,10 +92,9 @@ class ItemControllerTest extends AbstractMvcTest {
   }
 
   @Test
-  @Ignore
-    //ignored for now
   void updateItem() throws Exception {
     Item mockItem = mockItem(UUID.randomUUID(), ItemStatus.AVAILABLE);
+    when(itemService.updateItem(any(), any(), any(), any())).thenReturn(mockItem);
 
     mvc.perform(putObject("/rest/item", ItemRecord.fromEntity(mockItem)))
         .andExpect(status().isOk());

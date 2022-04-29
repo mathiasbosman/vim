@@ -1,6 +1,6 @@
 package be.mathiasbosman.vim.controller;
 
-import be.mathiasbosman.vim.domain.TransactionDto;
+import be.mathiasbosman.vim.domain.TransactionRecord;
 import be.mathiasbosman.vim.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +17,8 @@ public class TransactionController {
   private final TransactionService transactionService;
 
   @PostMapping("/rest/transaction")
-  public TransactionDto executeTransaction(@RequestBody TransactionDto transactionDto) {
-    return TransactionDto.fromEntity(
-        transactionService.executeTransaction(transactionDto.mapToTransactionEntity()));
+  public TransactionRecord executeTransaction(@RequestBody TransactionRecord transactionRecord) {
+    return TransactionRecord.fromEntity(
+        transactionService.executeTransaction(transactionRecord.mapToTransactionEntity()));
   }
 }

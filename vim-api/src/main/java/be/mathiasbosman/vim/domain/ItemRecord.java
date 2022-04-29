@@ -7,12 +7,12 @@ import java.util.UUID;
 /**
  * Record for the {@link Item} entity.
  */
-public record ItemDto(UUID id, String name, String brand, CategoryDto categoryDto,
-                      ItemStatus status) {
+public record ItemRecord(UUID id, String name, String brand, CategoryRecord categoryRecord,
+                         ItemStatus status) {
 
-  public static ItemDto fromEntity(Item item) {
-    return new ItemDto(item.getId(), item.getName(), item.getBrand(),
-        CategoryDto.fromEntity(item.getCategory()), item.getStatus());
+  public static ItemRecord fromEntity(Item item) {
+    return new ItemRecord(item.getId(), item.getName(), item.getBrand(),
+        CategoryRecord.fromEntity(item.getCategory()), item.getStatus());
   }
 
   /**
@@ -24,7 +24,7 @@ public record ItemDto(UUID id, String name, String brand, CategoryDto categoryDt
     return Item.builder().id(id)
         .name(name)
         .brand(brand)
-        .category(categoryDto != null ? categoryDto.mapToCategoryEntity() : null)
+        .category(categoryRecord != null ? categoryRecord.mapToCategoryEntity() : null)
         .status(status)
         .build();
   }

@@ -14,9 +14,13 @@
         <configuration>
           <excludes>
             <!-- main application class -->
-            <exclude>**/VimApplication.class</exclude>
+            <exclude>**/VimApplication.*</exclude>
             <!-- hibernate classes -->
-            <exclude>**/entity/AbstractAuditedEntity.class</exclude>
+            <exclude>**/AbstractAuditedEntity.*</exclude>
+            <!-- security -->
+            <exclude>**/security/**</exclude>
+            <!-- records -->
+            <exclude>**/*Record.*</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -95,6 +99,8 @@
     <maven.compiler.source>${java.language.version}</maven.compiler.source>
     <maven.compiler.target>${java.language.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.organization>mathiasbosman</sonar.organization>
   </properties>
 
   <version>0.0.1-SNAPSHOT</version>

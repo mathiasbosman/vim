@@ -24,5 +24,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build
         run: mvn -B verify
-      - name: Code coverage
-        uses: codecov/codecov-action@v2
+      - name: Sonar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=mathiasbosman_vim

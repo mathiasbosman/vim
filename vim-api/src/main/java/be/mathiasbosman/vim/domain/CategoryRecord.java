@@ -6,10 +6,10 @@ import java.util.UUID;
 /**
  * Record for the {@link Category} entity.
  */
-public record CategoryDto(UUID id, String name, String code) {
+public record CategoryRecord(UUID id, String name, String code) {
 
-  public static CategoryDto fromEntity(Category category) {
-    return new CategoryDto(category.getId(), category.getName(), category.getCode());
+  public static CategoryRecord fromEntity(Category category) {
+    return new CategoryRecord(category.getId(), category.getName(), category.getCode());
   }
 
   /**

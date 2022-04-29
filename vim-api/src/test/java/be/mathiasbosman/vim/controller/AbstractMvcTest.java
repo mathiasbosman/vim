@@ -2,6 +2,7 @@ package be.mathiasbosman.vim.controller;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import be.mathiasbosman.vim.AbstractSpringBootTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +20,17 @@ public abstract class AbstractMvcTest extends AbstractSpringBootTest {
 
   private final ObjectMapper mapper = new ObjectMapper();
 
-  protected MockHttpServletRequestBuilder postObject(String url, Object object)
-      throws Exception {
+  protected MockHttpServletRequestBuilder postObject(String url, Object object) throws Exception {
 
     MockHttpServletRequestBuilder requestBuilder = post(url)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(mapper.writeValueAsString(object));
+    return requestBuilder.with(csrf());
+  }
+
+  protected MockHttpServletRequestBuilder putObject(String url, Object object) throws Exception {
+
+    MockHttpServletRequestBuilder requestBuilder = put(url)
         .contentType(MediaType.APPLICATION_JSON)
         .content(mapper.writeValueAsString(object));
     return requestBuilder.with(csrf());

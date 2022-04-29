@@ -5,6 +5,6 @@ import java.time.LocalDateTime;
 /**
  * Simple record of the server info.
  */
-public record ServerInfoDto(LocalDateTime time, boolean running) {
+public record ServerInfoRecord(LocalDateTime time, boolean running) {
 
 }

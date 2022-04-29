@@ -7,10 +7,10 @@ import java.util.UUID;
 /**
  * Record of the {@link Transaction} entity.
  */
-public record TransactionDto(UUID id, ItemDto itemDto, TransactionType type) {
+public record TransactionRecord(UUID id, ItemRecord itemDto, TransactionType type) {
 
-  public static TransactionDto fromEntity(Transaction transaction) {
-    return new TransactionDto(transaction.getId(), ItemDto.fromEntity(transaction.getItem()),
+  public static TransactionRecord fromEntity(Transaction transaction) {
+    return new TransactionRecord(transaction.getId(), ItemRecord.fromEntity(transaction.getItem()),
         transaction.getType());
   }
 

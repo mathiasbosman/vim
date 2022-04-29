@@ -2,18 +2,19 @@ package be.mathiasbosman.vim.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import be.mathiasbosman.vim.db.ItemRepository;
-import be.mathiasbosman.vim.domain.ItemDto;
+import be.mathiasbosman.vim.domain.ItemRecord;
 import be.mathiasbosman.vim.entity.Category;
 import be.mathiasbosman.vim.entity.Item;
 import be.mathiasbosman.vim.entity.ItemStatus;
 import be.mathiasbosman.vim.security.SecurityContext.Authority;
+import be.mathiasbosman.vim.service.ItemService;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,7 +27,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 class ItemControllerTest extends AbstractMvcTest {
 
   @MockBean
-  private ItemRepository itemRepository;
+  private ItemService itemService;
 
   private Item mockItem(UUID id, ItemStatus status) {
     Category mockCategory = Category.builder().name("test").build();
@@ -38,7 +39,7 @@ class ItemControllerTest extends AbstractMvcTest {
     Item mockItemA = mockItem(UUID.randomUUID(), ItemStatus.AVAILABLE);
     Item mockItemB = mockItem(UUID.randomUUID(), ItemStatus.AVAILABLE);
 
-    when(itemRepository.findAllByStatus(ItemStatus.AVAILABLE)).thenReturn(
+    when(itemService.findItems(ItemStatus.AVAILABLE)).thenReturn(
         List.of(mockItemA, mockItemB));
 
     mvc.perform(
@@ -59,7 +60,7 @@ class ItemControllerTest extends AbstractMvcTest {
   void findItem() throws Exception {
     Item mockItem = mockItem(UUID.randomUUID(), ItemStatus.UNAVAILABLE);
 
-    when(itemRepository.findById(mockItem.getId())).thenReturn(Optional.of(mockItem));
+    when(itemService.findById(mockItem.getId())).thenReturn(Optional.of(mockItem));
 
     mvc.perform(get("/rest/item/find").param("uuid", mockItem.getId().toString()))
         .andExpect(status().isOk())
@@ -71,7 +72,7 @@ class ItemControllerTest extends AbstractMvcTest {
   void findInvalidItem() throws Exception {
     UUID invalidUuid = UUID.randomUUID();
 
-    when(itemRepository.findById(invalidUuid)).thenReturn(Optional.empty());
+    when(itemService.findById(invalidUuid)).thenReturn(Optional.empty());
 
     mvc.perform(get("/rest/item/find").param("uuid", invalidUuid.toString()))
         .andExpect(status().isOk())
@@ -81,11 +82,11 @@ class ItemControllerTest extends AbstractMvcTest {
   @Test
   void saveItem() throws Exception {
     Item mockItem = mockItem(UUID.randomUUID(), ItemStatus.AVAILABLE);
-    ItemDto itemDto = ItemDto.fromEntity(mockItem);
+    ItemRecord itemRecord = ItemRecord.fromEntity(mockItem);
 
-    when(itemRepository.save(any(Item.class))).thenReturn(mockItem);
+    when(itemService.saveItem(any(Item.class))).thenReturn(mockItem);
 
-    mvc.perform(postObject("/rest/item", itemDto))
+    mvc.perform(postObject("/rest/item", itemRecord))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(mockItem.getId().toString()));
   }
@@ -93,9 +94,13 @@ class ItemControllerTest extends AbstractMvcTest {
   @Test
   void updateItem() throws Exception {
     Item mockItem = mockItem(UUID.randomUUID(), ItemStatus.AVAILABLE);
-    mockItem.setName("foo");
-    mockItem.setBrand("bar");
 
+    mvc.perform(putObject("/rest/item", ItemRecord.fromEntity(mockItem)))
+        .andExpect(status().isOk());
+
+    verify(itemService).updateItem(
+        mockItem.getId(), mockItem.getName(), mockItem.getBrand(), mockItem.getCategory().getCode()
+    );
   }
 
 }

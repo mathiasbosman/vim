@@ -1,7 +1,7 @@
 package be.mathiasbosman.vim.controller;
 
-import be.mathiasbosman.vim.domain.CategoryDto;
-import be.mathiasbosman.vim.domain.ItemDto;
+import be.mathiasbosman.vim.domain.CategoryRecord;
+import be.mathiasbosman.vim.domain.ItemRecord;
 import be.mathiasbosman.vim.entity.Item;
 import be.mathiasbosman.vim.entity.ItemStatus;
 import be.mathiasbosman.vim.service.ItemService;
@@ -25,25 +25,25 @@ public class ItemController {
   private final ItemService itemService;
 
   @GetMapping("/rest/items")
-  public List<ItemDto> getItems(@RequestParam ItemStatus status) {
-    return itemService.findItems(status).stream().map(ItemDto::fromEntity).toList();
+  public List<ItemRecord> getItems(@RequestParam ItemStatus status) {
+    return itemService.findItems(status).stream().map(ItemRecord::fromEntity).toList();
   }
 
   @GetMapping("/rest/item/find")
-  public ItemDto findItem(@RequestParam UUID uuid) {
-    return itemService.findById(uuid).map(ItemDto::fromEntity).orElse(null);
+  public ItemRecord findItem(@RequestParam UUID uuid) {
+    return itemService.findById(uuid).map(ItemRecord::fromEntity).orElse(null);
   }
 
   @PostMapping("/rest/item")
-  public ItemDto saveItem(@RequestBody ItemDto itemDto) {
-    return ItemDto.fromEntity(itemService.saveItem(itemDto.mapToItemEntity()));
+  public ItemRecord saveItem(@RequestBody ItemRecord itemRecord) {
+    return ItemRecord.fromEntity(itemService.saveItem(itemRecord.mapToItemEntity()));
   }
 
   @PutMapping("/rest/item")
-  public ItemDto updateItem(@RequestBody ItemDto itemDto) {
-    CategoryDto categoryDto = itemDto.categoryDto();
-    Item item = itemService.updateItem(itemDto.id(), itemDto.name(), itemDto.brand(),
-        categoryDto != null ? categoryDto.code() : null);
-    return ItemDto.fromEntity(item);
+  public ItemRecord updateItem(@RequestBody ItemRecord itemRecord) {
+    CategoryRecord categoryRecord = itemRecord.categoryRecord();
+    Item item = itemService.updateItem(itemRecord.id(), itemRecord.name(), itemRecord.brand(),
+        categoryRecord != null ? categoryRecord.code() : null);
+    return ItemRecord.fromEntity(item);
   }
 }

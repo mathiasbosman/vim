@@ -26,10 +26,10 @@ class TransactionControllerTest extends AbstractMvcTest {
   @Test
   void executeTransaction() throws Exception {
     var categoryDto = new CategoryRecord(UUID.randomUUID(), "foo", "bar");
-    var itemDto = new ItemRecord(UUID.randomUUID(), "foo", "bar", categoryDto,
-        ItemStatus.AVAILABLE);
-    var transactionDto = new TransactionRecord(UUID.randomUUID(), itemDto,
-        TransactionType.CHECK_OUT);
+    var itemDto = new ItemRecord(
+        UUID.randomUUID(), "foo", "bar", ItemStatus.AVAILABLE, categoryDto);
+    var transactionDto = new TransactionRecord(
+        UUID.randomUUID(), TransactionType.CHECK_OUT, itemDto);
 
     when(repository.save(any(Transaction.class))).thenReturn(
         transactionDto.mapToTransactionEntity());

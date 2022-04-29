@@ -7,11 +7,13 @@ import java.util.UUID;
 /**
  * Record of the {@link Transaction} entity.
  */
-public record TransactionRecord(UUID id, ItemRecord itemDto, TransactionType type) {
+public record TransactionRecord(UUID id, TransactionType type, ItemRecord itemDto) {
 
   public static TransactionRecord fromEntity(Transaction transaction) {
-    return new TransactionRecord(transaction.getId(), ItemRecord.fromEntity(transaction.getItem()),
-        transaction.getType());
+    return new TransactionRecord(
+        transaction.getId(),
+        transaction.getType(),
+        ItemRecord.fromEntity(transaction.getItem()));
   }
 
   /**
@@ -22,8 +24,8 @@ public record TransactionRecord(UUID id, ItemRecord itemDto, TransactionType typ
   public Transaction mapToTransactionEntity() {
     return Transaction.builder()
         .id(id)
-        .item(itemDto.mapToItemEntity())
         .type(type)
+        .item(itemDto.mapToItemEntity())
         .build();
   }
 }

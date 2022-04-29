@@ -20,7 +20,8 @@ public class ErrorAttributesWithUuid extends DefaultErrorAttributes {
   public static final String WEB_REQUEST = "webRequest";
 
   @Override
-  public Map<String, Object> getErrorAttributes(WebRequest webRequest,
+  public Map<String, Object> getErrorAttributes(
+      WebRequest webRequest,
       ErrorAttributeOptions options) {
     Throwable throwable = getError(webRequest);
     Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);

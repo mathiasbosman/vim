@@ -104,4 +104,18 @@ class ItemControllerTest extends AbstractMvcTest {
     );
   }
 
+  @Test
+  void updateItemWithoutCategory() throws Exception {
+    Item mockItem = mockItem(UUID.randomUUID(), ItemStatus.AVAILABLE);
+    mockItem.setCategory(null);
+    when(itemService.updateItem(any(), any(), any(), any())).thenReturn(mockItem);
+
+    mvc.perform(putObject("/rest/item", ItemRecord.fromEntity(mockItem)))
+        .andExpect(status().isOk());
+
+    verify(itemService).updateItem(
+        mockItem.getId(), mockItem.getName(), mockItem.getBrand(), null
+    );
+  }
+
 }

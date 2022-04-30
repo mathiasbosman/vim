@@ -1,7 +1,6 @@
 package be.mathiasbosman.vim.security;
 
 import be.mathiasbosman.vim.security.SecurityContext.Authority;
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,10 +30,5 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
   @Override
   protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
     return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
-  }
-
-  @Bean
-  public KeycloakSpringBootConfigResolver keyCloakConfigResolver() {
-    return new KeycloakSpringBootConfigResolver();
   }
 }

@@ -45,12 +45,10 @@ class ExceptionHandlerControllerAdviceTest extends AbstractMvcTest {
       throws Exception {
     mvc.perform(get("/exceptionStub/throw"))
         .andExpect(status().is(status.value()))
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
         .andExpect(jsonPath("$.status").value(status.value()))
-        .andExpect(jsonPath("$.message").value(message))
-        .andExpect(jsonPath("$.error").exists())
-        .andExpect(jsonPath("$.errorId").exists())
-        .andExpect(jsonPath("$.timestamp").exists())
-        .andExpect(jsonPath("$.exception").exists());
+        .andExpect(jsonPath("$.title").value(message))
+        .andExpect(jsonPath("$.requestUrl").exists())
+        .andExpect(jsonPath("$.errorId").exists());
   }
 }

@@ -1,20 +1,18 @@
-package be.mathiasbosman.vim.db;
+package be.mathiasbosman.vim.repository;
 
-import be.mathiasbosman.vim.entity.Category;
-import be.mathiasbosman.vim.entity.Item;
-import be.mathiasbosman.vim.entity.ItemStatus;
+import be.mathiasbosman.vim.domain.Category;
+import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemStatus;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.lang.Nullable;
 
-/**
- * Repository for the {@link Item} entity.
- *
- * @author Mathias Bosman
- * @since 0.0.1
- */
-public interface ItemRepository extends VimRepository<Item> {
+@RepositoryRestResource(collectionResourceRel = "items", path = "items")
+public interface ItemRestRepository extends PagingAndSortingRepository<Item, UUID> {
 
   /**
    * Returns all {@link Item}s that have ba name like the given parameter.
@@ -23,6 +21,7 @@ public interface ItemRepository extends VimRepository<Item> {
    * @return list of items
    */
   List<Item> findAllByNameContainingIgnoreCase(String name);
+
 
   /**
    * Returns all {@link Item}s in a given {@link Category}.
@@ -53,5 +52,4 @@ public interface ItemRepository extends VimRepository<Item> {
       + " or i.category in ?2 or i.status in ?3")
   List<Item> searchItems(@Nullable String name, @Nullable Collection<Category> categories,
       @Nullable Collection<ItemStatus> statuses);
-
 }

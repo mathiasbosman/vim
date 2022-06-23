@@ -4,10 +4,3 @@ spring:
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
     url: ${JDBC_DATABASE_URL}
-
-keycloak:
-  realm: ${KEYCLOAK_REALM}
-  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL}
-  resource: ${KEYCLOAK_RESOURCE}
-  credentials:
-    secret: ${KEYCLOAK_CREDENTIALS_SECRET}

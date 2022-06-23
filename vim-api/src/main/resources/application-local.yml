@@ -9,13 +9,3 @@ logging:
     be.mathiasbosman.vim: trace
 server:
   port: 8081
-
-keycloak:
-  realm: vim
-  auth-server-url: http://localhost:8180/auth
-  ssl-required: external
-  resource: vim-api
-  credentials:
-    secret: 070a8271-1bc7-4a52-807b-bde29fc41d24
-  use-resource-role-mappings: true
-  autodetect-bearer-only: true

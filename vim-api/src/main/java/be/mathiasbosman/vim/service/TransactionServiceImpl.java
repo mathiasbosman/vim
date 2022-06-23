@@ -1,15 +1,14 @@
 package be.mathiasbosman.vim.service;
 
-import be.mathiasbosman.vim.db.TransactionRepository;
+import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemStatus;
+import be.mathiasbosman.vim.domain.Transaction;
+import be.mathiasbosman.vim.domain.TransactionType;
 import be.mathiasbosman.vim.domain.VimException;
-import be.mathiasbosman.vim.entity.Item;
-import be.mathiasbosman.vim.entity.ItemStatus;
-import be.mathiasbosman.vim.entity.Transaction;
-import be.mathiasbosman.vim.entity.TransactionType;
+import be.mathiasbosman.vim.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,6 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Override
   @Transactional
-  @PreAuthorize("hasAuthority('transaction-write')")
   public Transaction create(Item item, TransactionType transactionType) {
     ItemStatus currentStatus = item.getStatus();
     if (!transactionType.isValidForItemStatus(currentStatus)) {

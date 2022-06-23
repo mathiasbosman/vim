@@ -1,7 +1,5 @@
 package be.mathiasbosman.vim.domain;
 
-import be.mathiasbosman.vim.entity.Item;
-import be.mathiasbosman.vim.entity.ItemStatus;
 import java.util.UUID;
 
 /**

@@ -4,20 +4,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import be.mathiasbosman.vim.db.TransactionRepository;
+import be.mathiasbosman.vim.AbstractMvcTest;
 import be.mathiasbosman.vim.domain.CategoryRecord;
 import be.mathiasbosman.vim.domain.ItemRecord;
+import be.mathiasbosman.vim.domain.ItemStatus;
+import be.mathiasbosman.vim.domain.Transaction;
 import be.mathiasbosman.vim.domain.TransactionRecord;
-import be.mathiasbosman.vim.entity.ItemStatus;
-import be.mathiasbosman.vim.entity.Transaction;
-import be.mathiasbosman.vim.entity.TransactionType;
-import be.mathiasbosman.vim.security.SecurityContext.Authority;
+import be.mathiasbosman.vim.domain.TransactionType;
+import be.mathiasbosman.vim.repository.TransactionRepository;
+import be.mathiasbosman.vim.security.SecurityContext.Role;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 
-@WithMockUser(authorities = {Authority.API_USER, Authority.TRANSACTION_WRITE})
+@WithMockUser(roles = {Role.USER})
 class TransactionControllerTest extends AbstractMvcTest {
 
   @MockBean

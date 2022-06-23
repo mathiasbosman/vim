@@ -1,4 +1,4 @@
-package be.mathiasbosman.vim.entity;
+package be.mathiasbosman.vim.domain;
 
 /**
  * Identifiable entity with a given identifier type.

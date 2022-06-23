@@ -1,6 +1,6 @@
-package be.mathiasbosman.vim.entity;
+package be.mathiasbosman.vim.domain;
 
-import static be.mathiasbosman.vim.entity.TransactionType.CHECK_IN;
+import static be.mathiasbosman.vim.domain.TransactionType.CHECK_IN;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;

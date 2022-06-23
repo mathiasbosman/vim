@@ -1,24 +1,44 @@
-package be.mathiasbosman.vim.db;
+package be.mathiasbosman.vim.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import be.mathiasbosman.vim.entity.Category;
+import be.mathiasbosman.vim.domain.Category;
+import be.mathiasbosman.vim.security.SecurityContext.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 
-class CategoryRepositoryTest extends AbstractRepositoryTest {
+@WithMockUser(roles = {Role.USER})
+class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Autowired
-  private CategoryRepository repository;
+  CategoryRestRepository repository;
+
+  @Test
+  void getByNameIsEmpty() {
+    assertThat(repository.getByName("foo")).isEmpty();
+  }
+
+  @Test
+  void getByName() {
+    Category persistedCategory = create(Category.builder().name("foo").code("bar").build());
+
+    assertThat(repository.getByName("foo"))
+        .isNotEmpty()
+        .hasValueSatisfying(cat -> assertThat(cat.getId()).isEqualTo(persistedCategory.getId()));
+  }
 
   @Test
   void getByCode() {
-    Category categoryA = create(Category.builder().name("Category A").code("A").build());
-    Category persisted = repository.getByCode(categoryA.getCode());
-    assertThat(persisted).isEqualTo(categoryA);
-    assertThat(persisted.getId()).isNotNull();
-    assertThat(persisted.getName()).isEqualTo(categoryA.getName());
-    assertThat(repository.getByCode("B")).isNull();
+    Category categoryA = create(Category.builder().name("foo").code("bar").build());
+
+    assertThat(repository.getByCode(categoryA.getCode()))
+        .hasValue(categoryA);
+  }
+
+  @Test
+  void getByCodeIsEmpty() {
+    assertThat(repository.getByCode("foo")).isEmpty();
   }
 
   @Test
@@ -33,6 +53,10 @@ class CategoryRepositoryTest extends AbstractRepositoryTest {
         .containsExactlyInAnyOrder(categoryA, categoryB, categoryC);
     assertThat(repository.findByCodeContainingOrNameContainingIgnoreCase("B", "B"))
         .containsExactly(categoryB);
+  }
+
+  @Test
+  void findByCodeContainingOrNameContainingIgnoreCaseIsEmpty() {
     assertThat(repository.findByCodeContainingOrNameContainingIgnoreCase("D", "d")).isEmpty();
   }
 
@@ -43,7 +67,15 @@ class CategoryRepositoryTest extends AbstractRepositoryTest {
         Category.builder().name("Sub cat. 1").code("S1").parentCategory(parent).build());
     Category subCategory2 = create(
         Category.builder().name("Sub cat. 2").code("S2").parentCategory(parent).build());
+
     assertThat(repository.findByParentCategory(parent))
         .containsExactlyInAnyOrder(subCategory1, subCategory2);
+  }
+
+  @Test
+  void findByParentCategoryIsEmpty() {
+    Category parent = create(Category.builder().name("Parent cat.").code("P").build());
+
+    assertThat(repository.findByParentCategory(parent)).isEmpty();
   }
 }

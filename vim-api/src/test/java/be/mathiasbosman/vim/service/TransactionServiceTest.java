@@ -5,15 +5,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
-import be.mathiasbosman.vim.db.TransactionRepository;
+import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemStatus;
+import be.mathiasbosman.vim.domain.Transaction;
+import be.mathiasbosman.vim.domain.TransactionType;
 import be.mathiasbosman.vim.domain.VimException;
-import be.mathiasbosman.vim.entity.Item;
-import be.mathiasbosman.vim.entity.ItemStatus;
-import be.mathiasbosman.vim.entity.Transaction;
-import be.mathiasbosman.vim.entity.TransactionType;
+import be.mathiasbosman.vim.repository.TransactionRepository;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,21 +27,15 @@ class TransactionServiceTest extends AbstractServiceTest {
 
   @Mock
   TransactionRepository transactionRepository;
-  @Mock
-  ItemService itemService;
 
   @BeforeEach
   void setUp() {
     lenient().when(transactionRepository.save(any(Transaction.class)))
         .thenAnswer(i -> i.getArgument(0));
-    lenient().when(itemService.saveItem(any(Item.class))).thenAnswer(i -> i.getArgument(0));
   }
 
   private Item mockItemDtoInRepositoryForStatus(ItemStatus status) {
-    Item item = Item.builder().id(UUID.randomUUID()).name("foo").status(status).build();
-    lenient().when(itemService.findById(any(UUID.class))).thenReturn(
-        Optional.of(item));
-    return item;
+    return Item.builder().id(UUID.randomUUID()).name("foo").status(status).build();
   }
 
   private void assertTransactions(TransactionType transactionType,

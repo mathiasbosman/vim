@@ -1,4 +1,4 @@
-package be.mathiasbosman.vim.entity;
+package be.mathiasbosman.vim.domain;
 
 /**
  * Possible states of an {@link Item}.

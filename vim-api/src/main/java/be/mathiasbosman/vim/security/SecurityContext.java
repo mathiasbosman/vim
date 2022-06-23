@@ -6,13 +6,12 @@ public final class SecurityContext {
     throw new IllegalStateException("Utility class");
   }
 
-  public static final class Authority {
+  public static final class Role {
 
-    public static final String API_USER = "api-user";
-    public static final String ITEM_WRITE = "item-write";
-    public static final String TRANSACTION_WRITE = "transaction-write";
+    public static final String ADMIN = "admin";
+    public static final String USER = "user";
 
-    private Authority() {
+    private Role() {
       throw new IllegalStateException("Utility class");
     }
 

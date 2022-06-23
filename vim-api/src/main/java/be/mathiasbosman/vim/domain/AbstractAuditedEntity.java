@@ -1,4 +1,4 @@
-package be.mathiasbosman.vim.entity;
+package be.mathiasbosman.vim.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;

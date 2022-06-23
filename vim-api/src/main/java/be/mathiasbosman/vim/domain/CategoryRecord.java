@@ -1,6 +1,5 @@
 package be.mathiasbosman.vim.domain;
 
-import be.mathiasbosman.vim.entity.Category;
 import java.util.UUID;
 
 /**

@@ -15,12 +15,10 @@
           <excludes>
             <!-- main application class -->
             <exclude>**/VimApplication.*</exclude>
-            <!-- hibernate classes -->
-            <exclude>**/AbstractAuditedEntity.*</exclude>
+            <!-- domain classes -->
+            <exclude>**/domain/**</exclude>
             <!-- security -->
             <exclude>**/security/**</exclude>
-            <!-- records -->
-            <exclude>**/*Record.*</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -45,15 +43,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- security -->
-      <dependency>
-        <artifactId>keycloak-spring-boot-starter</artifactId>
-        <groupId>org.keycloak</groupId>
-        <scope>import</scope>
-        <type>pom</type>
-        <version>18.0.0</version>
-      </dependency>
-
       <!-- testing -->
       <dependency>
         <artifactId>postgresql</artifactId>
@@ -82,7 +71,6 @@
   <modelVersion>4.0.0</modelVersion>
   <modules>
     <module>vim-api</module>
-    <module>vim-repo</module>
   </modules>
   <name>vim</name>
   <packaging>pom</packaging>

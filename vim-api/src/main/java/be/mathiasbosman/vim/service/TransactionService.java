@@ -1,8 +1,8 @@
 package be.mathiasbosman.vim.service;
 
-import be.mathiasbosman.vim.entity.Item;
-import be.mathiasbosman.vim.entity.Transaction;
-import be.mathiasbosman.vim.entity.TransactionType;
+import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.Transaction;
+import be.mathiasbosman.vim.domain.TransactionType;
 
 /**
  * Interface holding mostly {@link Transaction} related methods.

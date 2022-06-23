@@ -5,13 +5,3 @@ logging:
   level:
     root: error
     be.mathiasbosman.vim: info
-
-keycloak:
-  realm: <realm>
-  auth-server-url: <keycloak_url>/auth
-  ssl-required: external
-  resource: <clientId>
-  credentials:
-    secret: <clientSecret>
-  use-resource-role-mappings: true
-  autodetect-bearer-only: true

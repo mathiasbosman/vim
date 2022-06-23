@@ -1,4 +1,4 @@
-package be.mathiasbosman.vim.entity;
+package be.mathiasbosman.vim.domain;
 
 import java.util.UUID;
 import javax.persistence.Column;
@@ -12,34 +12,27 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * Item database entity.
+ * The Transaction database entity.
  */
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item extends AbstractAuditedEntity implements Identifiable<UUID> {
+public class Transaction extends AbstractAuditedEntity implements Identifiable<UUID> {
 
   @Id
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(name = "UUID", strategy = "uuid2")
   private UUID id;
 
-  @Column(nullable = false)
-  private String name;
-
-  private String brand;
-
   @ManyToOne
-  private Category category;
+  private Item item;
 
-  @Builder.Default
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private ItemStatus status = ItemStatus.AVAILABLE;
+  private TransactionType type;
 }

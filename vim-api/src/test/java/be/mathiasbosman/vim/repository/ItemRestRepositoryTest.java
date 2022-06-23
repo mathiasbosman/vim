@@ -1,23 +1,31 @@
-package be.mathiasbosman.vim.db;
+package be.mathiasbosman.vim.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import be.mathiasbosman.vim.entity.Category;
-import be.mathiasbosman.vim.entity.Item;
-import be.mathiasbosman.vim.entity.ItemStatus;
+import be.mathiasbosman.vim.domain.Category;
+import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemStatus;
+import be.mathiasbosman.vim.security.SecurityContext.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 
-class ItemRepositoryTest extends AbstractRepositoryTest {
+@WithMockUser(roles = {Role.USER})
+class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Autowired
-  private ItemRepository repository;
+  private ItemRestRepository repository;
+
+  @Test
+  void findAllByNameContainingIgnoreCaseIsEmpty() {
+    assertThat(repository.findAllByNameContainingIgnoreCase("dummy")).isEmpty();
+  }
 
   @Test
   void findAllByNameContainingIgnoreCase() {
-    assertThat(repository.findAllByNameContainingIgnoreCase("dummy")).isEmpty();
     Item itemA = create(Item.builder().name("The item A").build());
     Item itemB = create(Item.builder().name("The item B").build());
+
     assertThat(repository.findAllByNameContainingIgnoreCase("item"))
         .hasSize(2)
         .contains(itemA, itemB);
@@ -27,13 +35,18 @@ class ItemRepositoryTest extends AbstractRepositoryTest {
   }
 
   @Test
-  void findAllByCategory() {
+  void findAllByCategoryIsEmpty() {
     assertThat(repository.findAllByCategory(null)).isEmpty();
+  }
+
+  @Test
+  void findAllByCategory() {
     Category categoryA = create(mockCategory("Category A", "A"));
     Category categoryB = create(mockCategory("Category B", "B"));
     Category categoryC = create(mockCategory("Category C", "C"));
     Item itemA = create(Item.builder().name("Item A").category(categoryA).build());
     Item itemB = create(Item.builder().name("Item B").category(categoryB).build());
+
     assertThat(repository.findAllByCategory(categoryA))
         .hasSize(1)
         .contains(itemA);
@@ -45,11 +58,16 @@ class ItemRepositoryTest extends AbstractRepositoryTest {
   }
 
   @Test
-  void findAllByStatus() {
+  void findAllByStatusIsEmpty() {
     assertThat(repository.findAllByStatus(null)).isEmpty();
+  }
+
+  @Test
+  void findAllByStatus() {
     Item itemA = create(Item.builder().name("Item A").status(ItemStatus.AVAILABLE).build());
     Item itemB = create(Item.builder().name("Item B").status(ItemStatus.AVAILABLE).build());
     create(Item.builder().name("Item C").status(ItemStatus.DAMAGED).build());
+
     assertThat(repository.findAllByStatus(ItemStatus.AVAILABLE))
         .containsExactlyInAnyOrder(itemA, itemB);
     assertThat(repository.findAllByStatus(ItemStatus.UNAVAILABLE)).isEmpty();
@@ -57,7 +75,6 @@ class ItemRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void searchItems() {
-    assertThat(repository.searchItems(null, null, null)).isEmpty();
     Category categoryA = create(mockCategory("Category A", "A"));
     Category categoryB = create(mockCategory("Category B", "B"));
     create(mockCategory("Category C", "C"));

@@ -1,4 +1,4 @@
-package be.mathiasbosman.vim.entity;
+package be.mathiasbosman.vim.domain;
 
 import java.util.Collections;
 import java.util.Set;

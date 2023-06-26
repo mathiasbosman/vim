@@ -7,8 +7,6 @@ import be.mathiasbosman.vim.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -83,9 +82,9 @@ public class VimUserDetailsService implements UserDetailsService {
     return permissions;
   }
 
-  private List<GrantedAuthority> getGrantedAuthorities(List<String> permissions) {
+  private List<SimpleGrantedAuthority> getGrantedAuthorities(List<String> permissions) {
     return permissions.stream()
         .map(SimpleGrantedAuthority::new)
-        .collect(Collectors.toList());
+        .toList();
   }
 }

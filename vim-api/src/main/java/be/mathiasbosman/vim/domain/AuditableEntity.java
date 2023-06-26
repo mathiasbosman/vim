@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 
 /**
  * An auditable entity holding its creation and updated timestamps. They can be used with
- * annotations such as {@link javax.persistence.PrePersist} and {@link javax.persistence.PreUpdate}
- * or set manually.
- *
+ * annotations such as {@link jakarta.persistence.PrePersist} and
+ * {@link jakarta.persistence.PreUpdate} or set manually.
  */
 public interface AuditableEntity {
 

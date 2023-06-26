@@ -3,6 +3,7 @@ package be.mathiasbosman.vim.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemMother;
 import be.mathiasbosman.vim.domain.Transaction;
 import be.mathiasbosman.vim.domain.TransactionType;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ class TransactionRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByItemIsEmpty() {
-    Item itemA = create(Item.builder().name("The item A").build());
+    Item itemA = create(ItemMother.randomItem());
 
     assertThat(repository.findAllByItem(null)).isEmpty();
     assertThat(repository.findAllByItem(itemA)).isEmpty();
@@ -23,10 +24,11 @@ class TransactionRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByItem() {
-    Item item = create(Item.builder().name("The item A").build());
+    Item item = create(ItemMother.randomItem());
     Transaction transaction1 = create(Transaction.builder()
         .type(TransactionType.CHECK_IN)
         .item(item).build());
+
     assertThat(repository.findAllByItem(item)).containsExactly(transaction1);
 
     // create second transaction

@@ -6,7 +6,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @Slf4j
 public class VimPostgresqlContainer extends PostgreSQLContainer<VimPostgresqlContainer> {
 
-  private static final String IMAGE_VERSION = "postgres:11.1";
+  private static final String IMAGE_VERSION = "postgres:14.5";
   private static VimPostgresqlContainer container;
 
   private VimPostgresqlContainer() {

@@ -3,6 +3,7 @@ package be.mathiasbosman.vim.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import be.mathiasbosman.vim.domain.Category;
+import be.mathiasbosman.vim.domain.CategoryMother;
 import be.mathiasbosman.vim.security.SecurityContext.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,16 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void getByName() {
-    Category persistedCategory = create(Category.builder().name("foo").code("bar").build());
+    Category persistedCategory = create(CategoryMother.randomItem());
 
-    assertThat(repository.getByName("foo"))
+    assertThat(repository.getByName(persistedCategory.getName()))
         .isNotEmpty()
         .hasValueSatisfying(cat -> assertThat(cat.getId()).isEqualTo(persistedCategory.getId()));
   }
 
   @Test
   void getByCode() {
-    Category categoryA = create(Category.builder().name("foo").code("bar").build());
+    Category categoryA = create(CategoryMother.randomItem());
 
     assertThat(repository.getByCode(categoryA.getCode()))
         .hasValue(categoryA);
@@ -43,9 +44,9 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findByCodeContainingOrNameContainingIgnoreCase() {
-    Category categoryA = create(Category.builder().name("Category A").code("A").build());
-    Category categoryB = create(Category.builder().name("Category B").code("B").build());
-    Category categoryC = create(Category.builder().name("Category C").code("CAT").build());
+    Category categoryA = create(CategoryMother.itemWithNameAndCode("Category A", "A"));
+    Category categoryB = create(CategoryMother.itemWithNameAndCode("Category B", "B"));
+    Category categoryC = create(CategoryMother.itemWithNameAndCode("Category C", "CAT"));
 
     assertThat(repository.findByCodeContainingOrNameContainingIgnoreCase("a", "a"))
         .containsExactlyInAnyOrder(categoryA, categoryB, categoryC);
@@ -62,11 +63,11 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findByParentCategory() {
-    Category parent = create(Category.builder().name("Parent cat.").code("P").build());
-    Category subCategory1 = create(
-        Category.builder().name("Sub cat. 1").code("S1").parentCategory(parent).build());
-    Category subCategory2 = create(
-        Category.builder().name("Sub cat. 2").code("S2").parentCategory(parent).build());
+    Category parent = create(CategoryMother.randomItem());
+    Category subCategory1 = create(CategoryMother.randomItem().toBuilder()
+        .parentCategory(parent).build());
+    Category subCategory2 = create(CategoryMother.randomItem().toBuilder()
+        .parentCategory(parent).build());
 
     assertThat(repository.findByParentCategory(parent))
         .containsExactlyInAnyOrder(subCategory1, subCategory2);
@@ -74,7 +75,7 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findByParentCategoryIsEmpty() {
-    Category parent = create(Category.builder().name("Parent cat.").code("P").build());
+    Category parent = create(CategoryMother.randomItem());
 
     assertThat(repository.findByParentCategory(parent)).isEmpty();
   }

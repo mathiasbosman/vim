@@ -8,6 +8,8 @@ public final class SecurityContext {
 
   public static final class Role {
 
+    public static final String PREFIX = "ROLE_";
+
     public static final String ADMIN = "admin";
     public static final String USER = "user";
 

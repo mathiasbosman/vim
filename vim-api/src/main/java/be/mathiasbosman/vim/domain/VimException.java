@@ -5,7 +5,7 @@ import org.slf4j.event.Level;
 /**
  * Exception used for validations.
  */
-public class VimException extends RuntimeException {
+public class VimException extends RuntimeException implements ValidationException {
 
   private final Level logLevel;
 
@@ -14,6 +14,7 @@ public class VimException extends RuntimeException {
     this.logLevel = logLevel;
   }
 
+  @Override
   public Level getLogLevel() {
     return logLevel;
   }

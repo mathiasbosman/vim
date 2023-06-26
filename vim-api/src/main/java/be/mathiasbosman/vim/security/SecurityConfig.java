@@ -1,46 +1,111 @@
 package be.mathiasbosman.vim.security;
 
 import be.mathiasbosman.vim.security.SecurityContext.Role;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.hateoas.mediatype.problem.Problem;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-        .httpBasic()
-        .and()
-        .authorizeRequests()
-        .antMatchers("/rest/public/**").permitAll()
-        .antMatchers("/rest/**").hasRole(Role.USER)
-        .and()
-        .formLogin();
+  private static final String[] publicPatterns = {
+      "/auth/**",
+      "/rest/public/**"
+  };
+  private static final String[] userPatterns = {
+      "/rest/**"
+  };
+  private static final String[] adminPatterns = {
+      "/admin"
+  };
+  private final JwtRequestFilter jwtRequestFilter;
+  private final ObjectMapper objectMapper;
+
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // enable CORS and disable CSRF
+    http.cors().and().csrf().disable();
+
+    // set session management to stateless
+    http.sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+    // set unauthorized request exception handler
+    http.exceptionHandling().authenticationEntryPoint((this::createAuthenticationExceptionHandler));
+
+    // set endpoint permissions
+    http.authorizeRequests()
+        .antMatchers(publicPatterns).permitAll()
+        .antMatchers(userPatterns).hasRole(Role.USER)
+        .antMatchers(adminPatterns).hasRole(Role.ADMIN)
+        .anyRequest().authenticated();
+
+    // set oauth2 resources server
+    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
   }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    final String password = "password";
-    auth.inMemoryAuthentication()
-        .passwordEncoder(passwordEncoder())
-        .withUser("user")
-        .password(this.passwordEncoder().encode(password))
-        .roles(Role.USER, Role.ADMIN);
+  private void createAuthenticationExceptionHandler(HttpServletRequest request,
+      HttpServletResponse response, AuthenticationException authenticationException)
+      throws IOException {
+    HttpStatus status = HttpStatus.UNAUTHORIZED;
+    Problem problem = Problem.create()
+        .withStatus(status)
+        .withTitle(status.getReasonPhrase());
+    response.setStatus(status.value());
+    response.setContentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+    response.getWriter().write(objectMapper.writeValueAsString(problem));
   }
 
   @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
+  public CorsFilter corsFilter() {
+    // Used by spring security if CORS is enabled.
+    UrlBasedCorsConfigurationSource source =
+        new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.addAllowedOrigin("*");
+    config.addAllowedHeader("*");
+    config.addAllowedMethod("*");
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 }

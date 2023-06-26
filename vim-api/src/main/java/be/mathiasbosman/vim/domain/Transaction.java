@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * The Transaction database entity.
@@ -25,8 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Transaction extends AbstractAuditedEntity implements Identifiable<UUID> {
 
   @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(name = "UUID", strategy = "uuid2")
+  @GeneratedValue
   private UUID id;
 
   @ManyToOne

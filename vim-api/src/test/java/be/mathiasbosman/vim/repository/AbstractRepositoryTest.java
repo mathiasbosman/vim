@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 public abstract class AbstractRepositoryTest extends AbstractSpringBootTest {
 
   @Autowired
-  private TestEntityManager entityManager;
+  protected TestEntityManager entityManager;
 
   protected <E> E create(E entity) {
     return entityManager.persist(entity);

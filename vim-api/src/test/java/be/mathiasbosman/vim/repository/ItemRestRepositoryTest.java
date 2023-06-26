@@ -3,9 +3,13 @@ package be.mathiasbosman.vim.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import be.mathiasbosman.vim.domain.Category;
+import be.mathiasbosman.vim.domain.CategoryMother;
 import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemMother;
 import be.mathiasbosman.vim.domain.ItemStatus;
 import be.mathiasbosman.vim.security.SecurityContext.Role;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -41,11 +45,11 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByCategory() {
-    Category categoryA = create(mockCategory("Category A", "A"));
-    Category categoryB = create(mockCategory("Category B", "B"));
-    Category categoryC = create(mockCategory("Category C", "C"));
-    Item itemA = create(Item.builder().name("Item A").category(categoryA).build());
-    Item itemB = create(Item.builder().name("Item B").category(categoryB).build());
+    Category categoryA = create(CategoryMother.itemWithNameAndCode("Category A", "A"));
+    Category categoryB = create(CategoryMother.itemWithNameAndCode("Category B", "B"));
+    Category categoryC = create(CategoryMother.itemWithNameAndCode("Category C", "C"));
+    Item itemA = create(ItemMother.randomItem().toBuilder().category(categoryA).build());
+    Item itemB = create(ItemMother.randomItem().toBuilder().category(categoryB).build());
 
     assertThat(repository.findAllByCategory(categoryA))
         .hasSize(1)
@@ -64,9 +68,9 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByStatus() {
-    Item itemA = create(Item.builder().name("Item A").status(ItemStatus.AVAILABLE).build());
-    Item itemB = create(Item.builder().name("Item B").status(ItemStatus.AVAILABLE).build());
-    create(Item.builder().name("Item C").status(ItemStatus.DAMAGED).build());
+    Item itemA = create(ItemMother.randomItem().toBuilder().status(ItemStatus.AVAILABLE).build());
+    Item itemB = create(ItemMother.randomItem().toBuilder().status(ItemStatus.AVAILABLE).build());
+    create(ItemMother.randomItem().toBuilder().status(ItemStatus.DAMAGED).build());
 
     assertThat(repository.findAllByStatus(ItemStatus.AVAILABLE))
         .containsExactlyInAnyOrder(itemA, itemB);
@@ -75,17 +79,20 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void searchItems() {
-    Category categoryA = create(mockCategory("Category A", "A"));
-    Category categoryB = create(mockCategory("Category B", "B"));
-    create(mockCategory("Category C", "C"));
+    Category categoryA = create(CategoryMother.itemWithNameAndCode("Category A", "A"));
+    Category categoryB = create(CategoryMother.itemWithNameAndCode("Category B", "B"));
+
     Item itemA = create(Item.builder().name("Item A").category(categoryA).build());
     Item itemB = create(Item.builder().name("Item B").category(categoryB).build());
+    Item itemC = create(Item.builder().name("Foo B").category(categoryB).build());
 
     assertThat(repository.searchItems("item", null, null))
         .containsExactlyInAnyOrder(itemA, itemB);
-  }
-
-  private Category mockCategory(String name, String code) {
-    return Category.builder().name(name).code(code).build();
+    assertThat(repository.searchItems(null, Collections.singletonList(categoryA), null))
+        .containsExactly(itemA);
+    assertThat(repository.searchItems(null, Collections.singleton(categoryB), null))
+        .containsExactlyInAnyOrder(itemB, itemC);
+    assertThat(repository.searchItems(null, List.of(categoryA, categoryB), null))
+        .containsExactlyInAnyOrder(itemA, itemB, itemC);
   }
 }

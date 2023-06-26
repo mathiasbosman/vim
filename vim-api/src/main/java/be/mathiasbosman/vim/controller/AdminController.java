@@ -2,6 +2,7 @@ package be.mathiasbosman.vim.controller;
 
 import be.mathiasbosman.vim.domain.ServerInfoRecord;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ public class AdminController {
 
   @GetMapping("/rest/public/admin/info")
   public ServerInfoRecord info() {
-    return new ServerInfoRecord(LocalDateTime.now(), true);
+    return new ServerInfoRecord(LocalDateTime.now(), ZoneId.systemDefault(), true);
   }
+
 }

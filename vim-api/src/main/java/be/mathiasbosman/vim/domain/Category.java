@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Category database entity.
@@ -20,15 +19,14 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-public class Category extends AbstractAuditedEntity implements Identifiable<UUID> {
+public class Category extends AbstractDeletableEntity implements Identifiable<UUID> {
 
   @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(name = "UUID", strategy = "uuid2")
+  @GeneratedValue
   private UUID id;
 
   @Column(unique = true, nullable = false)

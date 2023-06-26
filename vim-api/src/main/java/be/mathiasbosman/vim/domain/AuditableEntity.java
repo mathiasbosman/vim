@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
  * annotations such as {@link javax.persistence.PrePersist} and {@link javax.persistence.PreUpdate}
  * or set manually.
  *
- * @author Mathias Bosman
- * @since 1.0.0
  */
 public interface AuditableEntity {
 

@@ -57,14 +57,14 @@ public class SecurityConfig {
 
     // set session management to stateless
     http.sessionManagement(
-        (config) -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     // set unauthorized request exception handler
     http.exceptionHandling(
-        (config) -> config.authenticationEntryPoint(this::createAuthenticationExceptionHandler));
+        config -> config.authenticationEntryPoint(this::createAuthenticationExceptionHandler));
 
     // set endpoint permissions
-    http.authorizeHttpRequests((requests) -> requests.requestMatchers(publicPatterns).permitAll()
+    http.authorizeHttpRequests(requests -> requests.requestMatchers(publicPatterns).permitAll()
         .requestMatchers(userPatterns).hasRole(Role.USER)
         .requestMatchers(adminPatterns).hasRole(Role.ADMIN)
         .anyRequest().authenticated());

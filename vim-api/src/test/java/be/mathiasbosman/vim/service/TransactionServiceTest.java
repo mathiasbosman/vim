@@ -2,10 +2,12 @@ package be.mathiasbosman.vim.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
 import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemMother;
 import be.mathiasbosman.vim.domain.ItemStatus;
 import be.mathiasbosman.vim.domain.Transaction;
 import be.mathiasbosman.vim.domain.TransactionType;
@@ -14,7 +16,6 @@ import be.mathiasbosman.vim.repository.TransactionRepository;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,11 +32,7 @@ class TransactionServiceTest extends AbstractServiceTest {
   @BeforeEach
   void setUp() {
     lenient().when(transactionRepository.save(any(Transaction.class)))
-        .thenAnswer(i -> i.getArgument(0));
-  }
-
-  private Item mockItemDtoInRepositoryForStatus(ItemStatus status) {
-    return Item.builder().id(UUID.randomUUID()).name("foo").status(status).build();
+        .thenAnswer(returnsFirstArg());
   }
 
   private void assertTransactions(TransactionType transactionType,
@@ -44,8 +41,9 @@ class TransactionServiceTest extends AbstractServiceTest {
 
     allowedStatuses.forEach(status -> {
       // create item and mock repository
-      Item item = mockItemDtoInRepositoryForStatus(status);
+      Item item = ItemMother.randomItem().toBuilder().status(status).build();
       Transaction transaction = transactionService.create(item, transactionType);
+
       assertThat(transaction).isNotNull();
       assertThat(transaction.getType()).isEqualTo(transactionType);
       assertThat(transaction.getItem().getId()).isEqualTo(item.getId());
@@ -55,7 +53,7 @@ class TransactionServiceTest extends AbstractServiceTest {
     // all other statuses should throw exception
     Arrays.stream(ItemStatus.values()).filter(status -> !allowedStatuses.contains(status))
         .forEach(illegalStatus -> {
-          Item item = mockItemDtoInRepositoryForStatus(illegalStatus);
+          Item item = ItemMother.randomItem().toBuilder().status(illegalStatus).build();
           assertThatThrownBy(() -> transactionService.create(item, transactionType))
               .isInstanceOf(VimException.class);
         });

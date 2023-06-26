@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Item database entity.
@@ -21,14 +20,13 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item extends AbstractAuditedEntity implements Identifiable<UUID> {
+public class Item extends AbstractDeletableEntity implements Identifiable<UUID> {
 
   @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(name = "UUID", strategy = "uuid2")
+  @GeneratedValue
   private UUID id;
 
   @Column(nullable = false)

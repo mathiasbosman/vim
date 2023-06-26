@@ -13,7 +13,7 @@ public enum TransactionType {
   CHECK_OUT(Set.of(ItemStatus.AVAILABLE, ItemStatus.RESERVED), ItemStatus.CHECKED_OUT),
   MARK_DAMAGED(Set.of(ItemStatus.AVAILABLE, ItemStatus.UNAVAILABLE, ItemStatus.CHECKED_OUT,
       ItemStatus.RESERVED), ItemStatus.DAMAGED),
-  MARK_REPAIRED(ItemStatus.DAMAGED, ItemStatus.AVAILABLE),
+  MARK_REPAIRED(Collections.singleton(ItemStatus.DAMAGED), ItemStatus.AVAILABLE),
   REMOVE(Set.of(ItemStatus.AVAILABLE, ItemStatus.DAMAGED), ItemStatus.UNAVAILABLE);
 
   private final Set<ItemStatus> preItemStates;
@@ -23,10 +23,6 @@ public enum TransactionType {
       ItemStatus postItemStatus) {
     this.preItemStates = preItemStatus;
     this.postItemStatus = postItemStatus;
-  }
-
-  TransactionType(ItemStatus preItemStatus, ItemStatus postItemStatus) {
-    this(Collections.singleton(preItemStatus), postItemStatus);
   }
 
   public boolean isValidForItemStatus(ItemStatus itemStatus) {

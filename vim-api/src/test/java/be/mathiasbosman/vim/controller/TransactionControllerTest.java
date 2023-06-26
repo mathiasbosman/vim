@@ -35,7 +35,7 @@ class TransactionControllerTest extends AbstractMvcTest {
     when(repository.save(any(Transaction.class))).thenReturn(
         transactionDto.mapToTransactionEntity());
 
-    mvc.perform(postObject("/rest/transaction", transactionDto))
+    mvc.perform(postObject("/rest/transactions", transactionDto))
         .andExpect(status().isOk());
   }
 }

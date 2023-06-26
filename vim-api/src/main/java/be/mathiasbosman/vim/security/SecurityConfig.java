@@ -2,9 +2,9 @@ package be.mathiasbosman.vim.security;
 
 import be.mathiasbosman.vim.security.SecurityContext.Role;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +13,12 @@ import org.springframework.hateoas.mediatype.problem.Problem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,7 +33,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
   private static final String[] publicPatterns = {
@@ -50,21 +52,22 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     // enable CORS and disable CSRF
-    http.cors().and().csrf().disable();
+    http.csrf(AbstractHttpConfigurer::disable);
+    http.cors(Customizer.withDefaults());
 
     // set session management to stateless
-    http.sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    http.sessionManagement(
+        (config) -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     // set unauthorized request exception handler
-    http.exceptionHandling().authenticationEntryPoint((this::createAuthenticationExceptionHandler));
+    http.exceptionHandling(
+        (config) -> config.authenticationEntryPoint(this::createAuthenticationExceptionHandler));
 
     // set endpoint permissions
-    http.authorizeRequests()
-        .antMatchers(publicPatterns).permitAll()
-        .antMatchers(userPatterns).hasRole(Role.USER)
-        .antMatchers(adminPatterns).hasRole(Role.ADMIN)
-        .anyRequest().authenticated();
+    http.authorizeHttpRequests((requests) -> requests.requestMatchers(publicPatterns).permitAll()
+        .requestMatchers(userPatterns).hasRole(Role.USER)
+        .requestMatchers(adminPatterns).hasRole(Role.ADMIN)
+        .anyRequest().authenticated());
 
     // set oauth2 resources server
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

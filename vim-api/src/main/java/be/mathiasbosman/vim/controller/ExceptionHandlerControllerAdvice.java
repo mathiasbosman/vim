@@ -1,9 +1,9 @@
 package be.mathiasbosman.vim.controller;
 
 import be.mathiasbosman.vim.domain.VimException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
 import org.springframework.hateoas.mediatype.problem.Problem;

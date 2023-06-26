@@ -93,7 +93,7 @@ public class AuthenticationService {
               JwtRequestFilter.HEADER_AUTHORIZATION_TYPE
           );
         }).orElseThrow(
-            () -> new IllegalStateException("Could not create token for user " + username));
+            () -> new IllegalStateException("Could not create token for this user"));
   }
 
   private RefreshToken getRefreshToken(User user) {

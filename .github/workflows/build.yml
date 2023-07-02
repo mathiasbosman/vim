@@ -16,8 +16,3 @@ jobs:
           cache: maven
       - name: Build
         run: mvn -B verify
-      - name: Sonar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=mathiasbosman_vim

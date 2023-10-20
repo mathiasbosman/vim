@@ -116,7 +116,7 @@
     <sonar.organization>mathiasbosman</sonar.organization>
 
     <!-- dependency versions -->
-    <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
+    <io.jsonwebtoken.version>0.12.3</io.jsonwebtoken.version>
     <org.testcontainers.version>1.19.0</org.testcontainers.version>
 
   </properties>

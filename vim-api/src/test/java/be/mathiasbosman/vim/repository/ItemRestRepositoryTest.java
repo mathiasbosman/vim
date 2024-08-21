@@ -48,8 +48,8 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
     Category categoryA = create(CategoryMother.withNameAndCode("Category A", "A"));
     Category categoryB = create(CategoryMother.withNameAndCode("Category B", "B"));
     Category categoryC = create(CategoryMother.withNameAndCode("Category C", "C"));
-    Item itemA = create(ItemMother.random().toBuilder().category(categoryA).build());
-    Item itemB = create(ItemMother.random().toBuilder().category(categoryB).build());
+    Item itemA = create(ItemMother.newItem(categoryA));
+    Item itemB = create(ItemMother.newItem(categoryB));
 
     assertThat(repository.findAllByCategory(categoryA))
         .hasSize(1)
@@ -68,9 +68,9 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByStatus() {
-    Item itemA = create(ItemMother.random().toBuilder().status(ItemStatus.AVAILABLE).build());
-    Item itemB = create(ItemMother.random().toBuilder().status(ItemStatus.AVAILABLE).build());
-    create(ItemMother.random().toBuilder().status(ItemStatus.DAMAGED).build());
+    Item itemA = create(ItemMother.newItem(ItemStatus.AVAILABLE));
+    Item itemB = create(ItemMother.newItem(ItemStatus.AVAILABLE));
+    create(ItemMother.newItem(ItemStatus.DAMAGED));
 
     assertThat(repository.findAllByStatus(ItemStatus.AVAILABLE))
         .containsExactlyInAnyOrder(itemA, itemB);

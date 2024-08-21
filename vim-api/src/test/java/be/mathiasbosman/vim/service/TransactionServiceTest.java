@@ -55,8 +55,8 @@ class TransactionServiceTest extends AbstractServiceTest {
     // all other statuses should throw exception
     Arrays.stream(ItemStatus.values()).filter(status -> !allowedStatuses.contains(status))
         .forEach(illegalStatus -> {
-          Item item = ItemMother.random().toBuilder().id(UUID.randomUUID()).status(illegalStatus).build();
-
+          Item item = ItemMother.random(illegalStatus);
+          when(itemRepository.getById(item.getId())).thenReturn(item);
           assertThatThrownBy(() -> transactionService.create(new TransactionRecord(transactionType, item.getId())))
               .isInstanceOf(VimException.class);
         });

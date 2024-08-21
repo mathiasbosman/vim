@@ -6,12 +6,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import be.mathiasbosman.vim.AbstractMvcTest;
-import be.mathiasbosman.vim.domain.CategoryRecord;
-import be.mathiasbosman.vim.domain.ItemRecord;
-import be.mathiasbosman.vim.domain.ItemStatus;
-import be.mathiasbosman.vim.domain.Transaction;
-import be.mathiasbosman.vim.domain.TransactionRecord;
-import be.mathiasbosman.vim.domain.TransactionType;
+import be.mathiasbosman.vim.domain.*;
+import be.mathiasbosman.vim.repository.ItemRestRepository;
 import be.mathiasbosman.vim.repository.TransactionRepository;
 import be.mathiasbosman.vim.security.SecurityContext.Role;
 import java.util.UUID;
@@ -24,11 +20,14 @@ class TransactionControllerTest extends AbstractMvcTest {
 
   @MockBean
   TransactionRepository repository;
+  @MockBean
+  ItemRestRepository itemRepository;
 
   @Test
   void executeTransaction() throws Exception {
     var transactionDto = new TransactionRecord(TransactionType.CHECK_OUT, UUID.randomUUID());
 
+    when(itemRepository.getById(any())).thenReturn(ItemMother.random(ItemStatus.AVAILABLE));
     when(repository.save(any(Transaction.class))).thenAnswer(returnsFirstArg());
 
     mvc.perform(postObject("/transactions", transactionDto))

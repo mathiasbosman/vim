@@ -1,8 +1,6 @@
 package be.mathiasbosman.vim.security;
 
 import be.mathiasbosman.vim.domain.User;
-import be.mathiasbosman.vim.domain.security.Permission;
-import be.mathiasbosman.vim.domain.security.Role;
 import be.mathiasbosman.vim.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +29,7 @@ public class VimUserDetailsService implements UserDetailsService {
         .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
   }
 
-  private UserDetails mapUserDetails(User user) {
+  private UserDetails mapUserDetails(@NonNull User user) {
     return new UserDetails() {
       @Override
       public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -71,7 +69,6 @@ public class VimUserDetailsService implements UserDetailsService {
   }
 
   private List<String> getPermissions(Collection<Role> roles) {
-
     List<String> permissions = new ArrayList<>();
     List<Permission> collection = new ArrayList<>();
     roles.forEach(r -> {

@@ -22,7 +22,7 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void getByName() {
-    Category persistedCategory = create(CategoryMother.randomItem());
+    Category persistedCategory = create(CategoryMother.random());
 
     assertThat(repository.getByName(persistedCategory.getName()))
         .isNotEmpty()
@@ -31,7 +31,7 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void getByCode() {
-    Category categoryA = create(CategoryMother.randomItem());
+    Category categoryA = create(CategoryMother.random());
 
     assertThat(repository.getByCode(categoryA.getCode()))
         .hasValue(categoryA);
@@ -44,9 +44,9 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findByCodeContainingOrNameContainingIgnoreCase() {
-    Category categoryA = create(CategoryMother.itemWithNameAndCode("Category A", "A"));
-    Category categoryB = create(CategoryMother.itemWithNameAndCode("Category B", "B"));
-    Category categoryC = create(CategoryMother.itemWithNameAndCode("Category C", "CAT"));
+    Category categoryA = create(CategoryMother.withNameAndCode("Category A", "A"));
+    Category categoryB = create(CategoryMother.withNameAndCode("Category B", "B"));
+    Category categoryC = create(CategoryMother.withNameAndCode("Category C", "CAT"));
 
     assertThat(repository.findByCodeContainingOrNameContainingIgnoreCase("a", "a"))
         .containsExactlyInAnyOrder(categoryA, categoryB, categoryC);
@@ -63,11 +63,11 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findByParentCategory() {
-    Category parent = create(CategoryMother.randomItem());
-    Category subCategory1 = create(CategoryMother.randomItem().toBuilder()
-        .parentCategory(parent).build());
-    Category subCategory2 = create(CategoryMother.randomItem().toBuilder()
-        .parentCategory(parent).build());
+    Category parent = create(CategoryMother.random());
+    Category subCategory1 = create(CategoryMother.random().toBuilder()
+                                                 .parentCategory(parent).build());
+    Category subCategory2 = create(CategoryMother.random().toBuilder()
+                                                 .parentCategory(parent).build());
 
     assertThat(repository.findByParentCategory(parent))
         .containsExactlyInAnyOrder(subCategory1, subCategory2);
@@ -75,7 +75,7 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findByParentCategoryIsEmpty() {
-    Category parent = create(CategoryMother.randomItem());
+    Category parent = create(CategoryMother.random());
 
     assertThat(repository.findByParentCategory(parent)).isEmpty();
   }

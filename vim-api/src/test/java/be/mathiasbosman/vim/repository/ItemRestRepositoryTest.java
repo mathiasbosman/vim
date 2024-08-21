@@ -45,11 +45,11 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByCategory() {
-    Category categoryA = create(CategoryMother.itemWithNameAndCode("Category A", "A"));
-    Category categoryB = create(CategoryMother.itemWithNameAndCode("Category B", "B"));
-    Category categoryC = create(CategoryMother.itemWithNameAndCode("Category C", "C"));
-    Item itemA = create(ItemMother.randomItem().toBuilder().category(categoryA).build());
-    Item itemB = create(ItemMother.randomItem().toBuilder().category(categoryB).build());
+    Category categoryA = create(CategoryMother.withNameAndCode("Category A", "A"));
+    Category categoryB = create(CategoryMother.withNameAndCode("Category B", "B"));
+    Category categoryC = create(CategoryMother.withNameAndCode("Category C", "C"));
+    Item itemA = create(ItemMother.random().toBuilder().category(categoryA).build());
+    Item itemB = create(ItemMother.random().toBuilder().category(categoryB).build());
 
     assertThat(repository.findAllByCategory(categoryA))
         .hasSize(1)
@@ -68,9 +68,9 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByStatus() {
-    Item itemA = create(ItemMother.randomItem().toBuilder().status(ItemStatus.AVAILABLE).build());
-    Item itemB = create(ItemMother.randomItem().toBuilder().status(ItemStatus.AVAILABLE).build());
-    create(ItemMother.randomItem().toBuilder().status(ItemStatus.DAMAGED).build());
+    Item itemA = create(ItemMother.random().toBuilder().status(ItemStatus.AVAILABLE).build());
+    Item itemB = create(ItemMother.random().toBuilder().status(ItemStatus.AVAILABLE).build());
+    create(ItemMother.random().toBuilder().status(ItemStatus.DAMAGED).build());
 
     assertThat(repository.findAllByStatus(ItemStatus.AVAILABLE))
         .containsExactlyInAnyOrder(itemA, itemB);
@@ -79,8 +79,8 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void searchItems() {
-    Category categoryA = create(CategoryMother.itemWithNameAndCode("Category A", "A"));
-    Category categoryB = create(CategoryMother.itemWithNameAndCode("Category B", "B"));
+    Category categoryA = create(CategoryMother.withNameAndCode("Category A", "A"));
+    Category categoryB = create(CategoryMother.withNameAndCode("Category B", "B"));
 
     Item itemA = create(Item.builder().name("Item A").category(categoryA).build());
     Item itemB = create(Item.builder().name("Item B").category(categoryB).build());

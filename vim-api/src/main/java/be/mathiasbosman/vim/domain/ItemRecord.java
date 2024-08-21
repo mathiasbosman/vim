@@ -19,18 +19,4 @@ public record ItemRecord(UUID id,
         item.getStatus(),
         CategoryRecord.fromEntity(item.getCategory()));
   }
-
-  /**
-   * Maps the record to an {@link Item} entity.
-   *
-   * @return an entity of {@link Item}
-   */
-  public Item mapToItemEntity() {
-    return Item.builder().id(id)
-        .name(name)
-        .brand(brand)
-        .category(categoryRecord != null ? categoryRecord.mapToCategoryEntity() : null)
-        .status(status)
-        .build();
-  }
 }

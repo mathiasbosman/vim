@@ -16,7 +16,7 @@ class TransactionRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByItemIsEmpty() {
-    Item itemA = create(ItemMother.randomItem());
+    Item itemA = create(ItemMother.random());
 
     assertThat(repository.findAllByItem(null)).isEmpty();
     assertThat(repository.findAllByItem(itemA)).isEmpty();
@@ -24,7 +24,7 @@ class TransactionRepositoryTest extends AbstractRepositoryTest {
 
   @Test
   void findAllByItem() {
-    Item item = create(ItemMother.randomItem());
+    Item item = create(ItemMother.random());
     Transaction transaction1 = create(Transaction.builder()
         .type(TransactionType.CHECK_IN)
         .item(item).build());

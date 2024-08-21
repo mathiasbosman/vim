@@ -13,7 +13,7 @@ class AdminControllerTest extends AbstractMvcTest {
 
   @Test
   void info() throws Exception {
-    mvc.perform(get("/rest/public/admin/info"))
+    mvc.perform(get("/admin/info"))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.time").isNotEmpty())

@@ -1,4 +1,4 @@
-package be.mathiasbosman.vim.domain.security;
+package be.mathiasbosman.vim.security;
 
 import be.mathiasbosman.vim.domain.AbstractAuditedEntity;
 import be.mathiasbosman.vim.domain.Identifiable;

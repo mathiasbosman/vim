@@ -12,3 +12,7 @@ spring:
         format_sql: true
   main:
     banner-mode: off
+
+logging:
+  level:
+    be.mathiasbosman.vim: trace

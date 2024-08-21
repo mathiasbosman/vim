@@ -1,4 +1,4 @@
-package be.mathiasbosman.vim.domain.security;
+package be.mathiasbosman.vim.security;
 
 import be.mathiasbosman.vim.domain.Identifiable;
 import jakarta.persistence.Column;

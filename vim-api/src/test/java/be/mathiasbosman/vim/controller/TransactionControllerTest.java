@@ -1,5 +1,6 @@
 package be.mathiasbosman.vim.controller;
 
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,16 +27,11 @@ class TransactionControllerTest extends AbstractMvcTest {
 
   @Test
   void executeTransaction() throws Exception {
-    var categoryDto = new CategoryRecord(UUID.randomUUID(), "foo", "bar");
-    var itemDto = new ItemRecord(
-        UUID.randomUUID(), "foo", "bar", ItemStatus.AVAILABLE, categoryDto);
-    var transactionDto = new TransactionRecord(
-        UUID.randomUUID(), TransactionType.CHECK_OUT, itemDto);
+    var transactionDto = new TransactionRecord(TransactionType.CHECK_OUT, UUID.randomUUID());
 
-    when(repository.save(any(Transaction.class))).thenReturn(
-        transactionDto.mapToTransactionEntity());
+    when(repository.save(any(Transaction.class))).thenAnswer(returnsFirstArg());
 
-    mvc.perform(postObject("/rest/transactions", transactionDto))
+    mvc.perform(postObject("/transactions", transactionDto))
         .andExpect(status().isOk());
   }
 }

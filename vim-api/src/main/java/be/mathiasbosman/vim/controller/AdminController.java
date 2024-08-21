@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AdminController {
 
-  @GetMapping("/rest/public/admin/info")
+  @GetMapping("/admin/info")
   public ServerInfoRecord info() {
     return new ServerInfoRecord(LocalDateTime.now(), ZoneId.systemDefault(), true);
   }

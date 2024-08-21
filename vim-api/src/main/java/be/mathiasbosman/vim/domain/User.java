@@ -1,6 +1,6 @@
 package be.mathiasbosman.vim.domain;
 
-import be.mathiasbosman.vim.domain.security.Role;
+import be.mathiasbosman.vim.security.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

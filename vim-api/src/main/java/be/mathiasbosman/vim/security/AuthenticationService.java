@@ -2,7 +2,6 @@ package be.mathiasbosman.vim.security;
 
 import be.mathiasbosman.vim.domain.RefreshToken;
 import be.mathiasbosman.vim.domain.User;
-import be.mathiasbosman.vim.domain.security.Role;
 import be.mathiasbosman.vim.repository.RefreshTokenRepository;
 import be.mathiasbosman.vim.repository.RoleRepository;
 import be.mathiasbosman.vim.repository.UserRepository;
@@ -32,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-  private static final TemporalAmount JWT_TOKEN_VALIDITY = Duration.ofHours(1);
+  private static final TemporalAmount JWT_VALIDITY = Duration.ofHours(1);
   private static final TemporalAmount REFRESH_TOKEN_VALIDITY = Duration.ofHours(2);
 
   private final AuthenticationManager authenticationManager;
@@ -79,8 +78,8 @@ public class AuthenticationService {
 
   private TokenRecord createToken(String username) {
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-    LocalDateTime expiresAt = LocalDateTime.now().plus(JWT_TOKEN_VALIDITY);
-    String token = JwtTokenUtil.generateToken(userDetails, expiresAt);
+    LocalDateTime expiresAt = LocalDateTime.now().plus(JWT_VALIDITY);
+    String token = JwtUtil.generateToken(userDetails, expiresAt);
     log.trace("Created token {} for user {}", token, username);
     return userRepository.getByUsername(userDetails.getUsername())
         .map(user -> {

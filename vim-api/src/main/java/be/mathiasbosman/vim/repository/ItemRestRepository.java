@@ -39,6 +39,8 @@ public interface ItemRestRepository extends PagingAndSortingRepository<Item, UUI
    */
   List<Item> findAllByStatus(ItemStatus status);
 
+  Item getById(UUID id);
+
   /**
    * Returns all {@link Item}s that have a given {@link ItemStatus} or given {@link Category} or
    * given {@link ItemStatus}.

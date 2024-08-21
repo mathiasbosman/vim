@@ -1,5 +1,6 @@
 package be.mathiasbosman.vim.security;
 
+import be.mathiasbosman.vim.controller.TransactionController;
 import be.mathiasbosman.vim.security.SecurityContext.Role;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,11 +38,11 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
   private static final String[] publicPatterns = {
-      "/auth/**",
-      "/rest/public/**"
+      AuthenticationController.REQUEST_MAPPING_PREFIX + "/**",
+      "/admin/info/**"
   };
   private static final String[] userPatterns = {
-      "/rest/**"
+          TransactionController.REQUEST_MAPPING + "/**"
   };
   private static final String[] adminPatterns = {
       "/admin"
@@ -67,9 +68,8 @@ public class SecurityConfig {
     http.authorizeHttpRequests(requests -> requests.requestMatchers(publicPatterns).permitAll()
         .requestMatchers(userPatterns).hasRole(Role.USER)
         .requestMatchers(adminPatterns).hasRole(Role.ADMIN)
-        .anyRequest().authenticated());
+        .anyRequest().denyAll());
 
-    // set oauth2 resources server
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

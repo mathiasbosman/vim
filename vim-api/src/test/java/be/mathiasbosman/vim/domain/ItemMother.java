@@ -6,7 +6,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @UtilityClass
 public class ItemMother {
 
-  public static Item randomItem() {
+  public static Item random() {
     return Item.builder()
         .name(RandomStringUtils.random(255))
         .build();

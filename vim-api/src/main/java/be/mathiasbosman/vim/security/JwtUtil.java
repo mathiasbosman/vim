@@ -15,7 +15,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @UtilityClass
-public class JwtTokenUtil implements Serializable {
+public class JwtUtil implements Serializable {
 
   Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 

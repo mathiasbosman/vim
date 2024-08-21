@@ -13,17 +13,4 @@ public record CategoryRecord(UUID id, String name, String code) {
     }
     return new CategoryRecord(category.getId(), category.getName(), category.getCode());
   }
-
-  /**
-   * Maps the record to the {@link Category} entity.
-   *
-   * @return an entity of {@link Category}
-   */
-  public Category mapToCategoryEntity() {
-    return Category.builder()
-        .id(id)
-        .name(name)
-        .code(code)
-        .build();
-  }
 }

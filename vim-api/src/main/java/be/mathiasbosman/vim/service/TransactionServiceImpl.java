@@ -1,10 +1,7 @@
 package be.mathiasbosman.vim.service;
 
-import be.mathiasbosman.vim.domain.Item;
-import be.mathiasbosman.vim.domain.ItemStatus;
-import be.mathiasbosman.vim.domain.Transaction;
-import be.mathiasbosman.vim.domain.TransactionType;
-import be.mathiasbosman.vim.domain.VimException;
+import be.mathiasbosman.vim.domain.*;
+import be.mathiasbosman.vim.repository.ItemRestRepository;
 import be.mathiasbosman.vim.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,30 +18,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
-  private final TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
+    private final ItemRestRepository itemRepository;
 
-  @Override
-  @Transactional
-  public Transaction create(Item item, TransactionType transactionType) {
-    ItemStatus currentStatus = item.getStatus();
-    if (!transactionType.isValidForItemStatus(currentStatus)) {
-      throw new VimException(
-          Level.WARN, "Invalid pre-item status (%s) for transaction of type %s",
-          currentStatus, transactionType);
+    @Override
+    @Transactional
+    public TransactionRecord create(TransactionRecord transaction) {
+        Item item = itemRepository.getById(transaction.itemId());
+        ItemStatus currentStatus = item.getStatus();
+        TransactionType transactionType = transaction.type();
+        if (!transactionType.isValidForItemStatus(currentStatus)) {
+            throw new VimException(
+                    Level.WARN, "Invalid pre-item status (%s) for transaction of type %s",
+                    currentStatus, transactionType);
+        }
+
+        // adjust the item status
+        item.setStatus(transactionType.getPostItemStatus());
+        // create the transaction
+        Transaction newTransaction = new Transaction(null, item, transactionType);
+        return TransactionRecord.fromEntity(transactionRepository.save(newTransaction));
     }
 
-    // adjust the item status
-    item.setStatus(transactionType.getPostItemStatus());
-    // create the transaction
-    Transaction transaction = Transaction.builder()
-        .item(item)
-        .type(transactionType)
-        .build();
-    return transactionRepository.save(transaction);
-  }
-
-  @Override
-  public Transaction executeTransaction(Transaction transaction) {
-    return create(transaction.getItem(), transaction.getType());
-  }
 }

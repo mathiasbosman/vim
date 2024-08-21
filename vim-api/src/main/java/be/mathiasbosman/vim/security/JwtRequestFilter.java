@@ -45,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   }
 
   private void loadAuthentication(HttpServletRequest request, String jwtToken) {
-    String username = JwtTokenUtil.getUsernameFromToken(jwtToken);
+    String username = JwtUtil.getUsernameFromToken(jwtToken);
     if (!StringUtils.hasLength(username)) {
       log.warn("Username '{}' has no length", username);
       return;
@@ -55,7 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
       return;
     }
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-    if (!JwtTokenUtil.validateToken(jwtToken, userDetails)) {
+    if (!JwtUtil.validateToken(jwtToken, userDetails)) {
       log.warn("Jwt token invalid");
       return;
     }

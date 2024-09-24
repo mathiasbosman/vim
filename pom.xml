@@ -65,7 +65,7 @@
       <dependency>
         <artifactId>commons-lang3</artifactId>
         <groupId>org.apache.commons</groupId>
-        <version>3.13.0</version>
+        <version>3.17.0</version>
       </dependency>
 
       <!-- testing -->
@@ -117,7 +117,7 @@
 
     <!-- dependency versions -->
     <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
-    <org.testcontainers.version>1.19.7</org.testcontainers.version>
+    <org.testcontainers.version>1.20.1</org.testcontainers.version>
 
   </properties>
 

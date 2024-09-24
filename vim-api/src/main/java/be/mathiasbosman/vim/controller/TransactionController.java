@@ -24,9 +24,8 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<TransactionRecord> executeTransaction(@RequestBody TransactionRecord transactionRecord) {
+    public TransactionRecord executeTransaction(@RequestBody TransactionRecord transactionRecord) {
         log.trace("POST /transactions with {}", transactionRecord);
-        TransactionRecord result = transactionService.create(transactionRecord);
-        return ResponseEntity.ok(result);
+        return transactionService.create(transactionRecord);
     }
 }

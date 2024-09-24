@@ -57,7 +57,9 @@ class TransactionServiceTest extends AbstractServiceTest {
         .forEach(illegalStatus -> {
           Item item = ItemMother.random(illegalStatus);
           when(itemRepository.getById(item.getId())).thenReturn(item);
-          assertThatThrownBy(() -> transactionService.create(new TransactionRecord(transactionType, item.getId())))
+          TransactionRecord transaction = new TransactionRecord(transactionType, item.getId());
+
+          assertThatThrownBy(() -> transactionService.create(transaction))
               .isInstanceOf(VimException.class);
         });
   }

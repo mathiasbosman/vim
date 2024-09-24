@@ -36,8 +36,18 @@ public class TransactionServiceImpl implements TransactionService {
         // adjust the item status
         item.setStatus(transactionType.getPostItemStatus());
         // create the transaction
-        Transaction newTransaction = new Transaction(null, item, transactionType);
-        return TransactionRecord.fromEntity(transactionRepository.save(newTransaction));
+        Transaction newTransaction = Transaction.builder()
+                .type(transactionType)
+                .item(item)
+                .build();
+        return toRecord(transactionRepository.save(newTransaction));
+    }
+
+    private static TransactionRecord toRecord(Transaction transaction) {
+        return new TransactionRecord(
+                transaction.getId(),
+                transaction.getType(),
+                transaction.getItem().getId());
     }
 
 }

@@ -2,19 +2,15 @@ package be.mathiasbosman.vim.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import java.io.Serializable;
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.function.Function;
+import javax.crypto.SecretKey;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.crypto.SecretKey;
 
 @UtilityClass
 public class JwtUtil implements Serializable {
@@ -37,11 +33,11 @@ public class JwtUtil implements Serializable {
 
   private static Claims getAllClaimsFromToken(String token) {
     return Jwts.parser()
-               .verifyWith(key)
-               .clockSkewSeconds(10)
-               .build()
-               .parseSignedClaims(token)
-               .getPayload();
+        .verifyWith(key)
+        .clockSkewSeconds(10)
+        .build()
+        .parseSignedClaims(token)
+        .getPayload();
   }
 
   public static boolean isTokenExpired(String token) {

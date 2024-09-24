@@ -5,7 +5,11 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -28,11 +32,11 @@ public class AuthenticationController {
   @PostMapping(REFRESH_TOKEN_MAPPING)
   public TokenRecord refreshToken(
       @RequestParam("refreshToken") UUID refreshTokenId) {
-      return authenticationService.findRefreshTokenById(refreshTokenId)
-                                .map(authenticationService::verifyRefreshToken)
-                                .map(RefreshToken::getUser)
-                                .map(authenticationService::createToken)
-                                .orElseThrow(() -> new IllegalStateException("Refresh token does not exist"));
+    return authenticationService.findRefreshTokenById(refreshTokenId)
+        .map(authenticationService::verifyRefreshToken)
+        .map(RefreshToken::getUser)
+        .map(authenticationService::createToken)
+        .orElseThrow(() -> new IllegalStateException("Refresh token does not exist"));
   }
 
 
@@ -42,6 +46,6 @@ public class AuthenticationController {
       @RequestParam("username") String username,
       @RequestParam("password") String password) {
 
-      return authenticationService.register(username, password);
+    return authenticationService.register(username, password);
   }
 }

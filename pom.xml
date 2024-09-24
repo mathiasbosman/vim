@@ -108,16 +108,16 @@
   </parent>
 
   <properties>
+    <io.jsonwebtoken.version>0.12.6</io.jsonwebtoken.version>
     <java.language.version>21</java.language.version>
     <maven.compiler.source>${java.language.version}</maven.compiler.source>
     <maven.compiler.target>${java.language.version}</maven.compiler.target>
+    <org.testcontainers.version>1.20.1</org.testcontainers.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.organization>mathiasbosman</sonar.organization>
 
     <!-- dependency versions -->
-    <io.jsonwebtoken.version>0.12.6</io.jsonwebtoken.version>
-    <org.testcontainers.version>1.20.1</org.testcontainers.version>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.organization>mathiasbosman</sonar.organization>
 
   </properties>
 

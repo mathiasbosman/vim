@@ -14,10 +14,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 @AutoConfigureMockMvc
 public abstract class AbstractMvcTest extends AbstractSpringBootTest {
 
+  private final ObjectMapper mapper = new ObjectMapper();
   @Autowired
   protected MockMvc mvc;
-
-  private final ObjectMapper mapper = new ObjectMapper();
 
   protected MockHttpServletRequestBuilder postObject(String url, Object object) throws Exception {
 

@@ -6,7 +6,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import be.mathiasbosman.vim.AbstractMvcTest;
-import be.mathiasbosman.vim.domain.*;
+import be.mathiasbosman.vim.domain.ItemMother;
+import be.mathiasbosman.vim.domain.ItemStatus;
+import be.mathiasbosman.vim.domain.Transaction;
+import be.mathiasbosman.vim.domain.TransactionRecord;
+import be.mathiasbosman.vim.domain.TransactionType;
 import be.mathiasbosman.vim.repository.ItemRestRepository;
 import be.mathiasbosman.vim.repository.TransactionRepository;
 import be.mathiasbosman.vim.security.SecurityContext.Role;

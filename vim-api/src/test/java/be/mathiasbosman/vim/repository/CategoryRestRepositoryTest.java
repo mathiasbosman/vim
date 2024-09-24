@@ -65,9 +65,9 @@ class CategoryRestRepositoryTest extends AbstractRepositoryTest {
   void findByParentCategory() {
     Category parent = create(CategoryMother.random());
     Category subCategory1 = create(CategoryMother.random().toBuilder()
-                                                 .parentCategory(parent).build());
+        .parentCategory(parent).build());
     Category subCategory2 = create(CategoryMother.random().toBuilder()
-                                                 .parentCategory(parent).build());
+        .parentCategory(parent).build());
 
     assertThat(repository.findByParentCategory(parent))
         .containsExactlyInAnyOrder(subCategory1, subCategory2);

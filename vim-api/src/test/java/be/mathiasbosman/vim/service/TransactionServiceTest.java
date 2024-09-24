@@ -7,14 +7,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
-import be.mathiasbosman.vim.domain.*;
+import be.mathiasbosman.vim.domain.Item;
+import be.mathiasbosman.vim.domain.ItemMother;
+import be.mathiasbosman.vim.domain.ItemStatus;
+import be.mathiasbosman.vim.domain.Transaction;
+import be.mathiasbosman.vim.domain.TransactionRecord;
+import be.mathiasbosman.vim.domain.TransactionType;
+import be.mathiasbosman.vim.domain.VimException;
 import be.mathiasbosman.vim.repository.ItemRestRepository;
 import be.mathiasbosman.vim.repository.TransactionRepository;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -44,7 +49,8 @@ class TransactionServiceTest extends AbstractServiceTest {
       // create item and mock repository
       Item item = ItemMother.random().toBuilder().id(UUID.randomUUID()).status(status).build();
       when(itemRepository.getById(item.getId())).thenReturn(item);
-      TransactionRecord transaction = transactionService.create(new TransactionRecord(transactionType, item.getId()));
+      TransactionRecord transaction = transactionService.create(
+          new TransactionRecord(transactionType, item.getId()));
 
       assertThat(transaction).isNotNull();
       assertThat(transaction.type()).isEqualTo(transactionType);
@@ -57,9 +63,8 @@ class TransactionServiceTest extends AbstractServiceTest {
         .forEach(illegalStatus -> {
           Item item = ItemMother.random(illegalStatus);
           when(itemRepository.getById(item.getId())).thenReturn(item);
-          TransactionRecord transaction = new TransactionRecord(transactionType, item.getId());
-
-          assertThatThrownBy(() -> transactionService.create(transaction))
+          assertThatThrownBy(
+              () -> transactionService.create(new TransactionRecord(transactionType, item.getId())))
               .isInstanceOf(VimException.class);
         });
   }

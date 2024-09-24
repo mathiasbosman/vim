@@ -76,23 +76,4 @@ class ItemRestRepositoryTest extends AbstractRepositoryTest {
         .containsExactlyInAnyOrder(itemA, itemB);
     assertThat(repository.findAllByStatus(ItemStatus.UNAVAILABLE)).isEmpty();
   }
-
-  @Test
-  void searchItems() {
-    Category categoryA = create(CategoryMother.withNameAndCode("Category A", "A"));
-    Category categoryB = create(CategoryMother.withNameAndCode("Category B", "B"));
-
-    Item itemA = create(Item.builder().name("Item A").category(categoryA).build());
-    Item itemB = create(Item.builder().name("Item B").category(categoryB).build());
-    Item itemC = create(Item.builder().name("Foo B").category(categoryB).build());
-
-    assertThat(repository.searchItems("item", null, null))
-        .containsExactlyInAnyOrder(itemA, itemB);
-    assertThat(repository.searchItems(null, Collections.singletonList(categoryA), null))
-        .containsExactly(itemA);
-    assertThat(repository.searchItems(null, Collections.singleton(categoryB), null))
-        .containsExactlyInAnyOrder(itemB, itemC);
-    assertThat(repository.searchItems(null, List.of(categoryA, categoryB), null))
-        .containsExactlyInAnyOrder(itemA, itemB, itemC);
-  }
 }

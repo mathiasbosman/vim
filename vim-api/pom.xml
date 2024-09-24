@@ -40,6 +40,10 @@
       <artifactId>flyway-core</artifactId>
       <groupId>org.flywaydb</groupId>
     </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
 
     <dependency>
       <artifactId>postgresql</artifactId>

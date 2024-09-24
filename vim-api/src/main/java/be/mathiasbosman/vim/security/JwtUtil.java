@@ -14,10 +14,12 @@ import java.util.function.Function;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.crypto.SecretKey;
+
 @UtilityClass
 public class JwtUtil implements Serializable {
 
-  Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+  SecretKey key = Jwts.SIG.HS256.key().build();
 
   public static String getUsernameFromToken(String token) {
     return getClaimFromToken(token, Claims::getSubject);
@@ -34,7 +36,12 @@ public class JwtUtil implements Serializable {
   }
 
   private static Claims getAllClaimsFromToken(String token) {
-    return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    return Jwts.parser()
+               .verifyWith(key)
+               .clockSkewSeconds(10)
+               .build()
+               .parseSignedClaims(token)
+               .getPayload();
   }
 
   public static boolean isTokenExpired(String token) {
@@ -46,10 +53,10 @@ public class JwtUtil implements Serializable {
     Date issuedAtDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
     Date expiresAtDate = Date.from(expiresAt.atZone(ZoneId.systemDefault()).toInstant());
     return Jwts.builder()
-        .setClaims(Collections.emptyMap())
-        .setSubject(userDetails.getUsername())
-        .setIssuedAt(issuedAtDate)
-        .setExpiration(expiresAtDate)
+        .claims(Collections.emptyMap())
+        .subject(userDetails.getUsername())
+        .issuedAt(issuedAtDate)
+        .expiration(expiresAtDate)
         .signWith(key)
         .compact();
   }

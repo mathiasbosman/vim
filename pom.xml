@@ -112,7 +112,7 @@
     <java.language.version>21</java.language.version>
     <maven.compiler.source>${java.language.version}</maven.compiler.source>
     <maven.compiler.target>${java.language.version}</maven.compiler.target>
-    <org.testcontainers.version>1.20.1</org.testcontainers.version>
+    <org.testcontainers.version>1.20.3</org.testcontainers.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- dependency versions -->
